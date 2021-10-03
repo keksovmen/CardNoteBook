@@ -7,7 +7,7 @@
 <form action="${form.action.getValue()}" method="post">
     <input type="hidden" name="dir_id" id="dir_id" value="${form.dir_id.getValue()}"/>
     <py:if test="form.action.getValue() != 'delete'">
-        <input type="hidden" name="parent" id="parent" value="${form.parent.getValue()}"/>
+        <input type="hidden" name="parent_id" id="parent_id" value="${form.parent_id.getValue()}"/>
         <label for="title">Title:
             <span py:if="form.title.getError()" style="color: red">${form.title.getError()}</span>
         </label><br/>

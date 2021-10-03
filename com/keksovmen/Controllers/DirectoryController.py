@@ -1,9 +1,9 @@
 import sqlalchemy
 import inspect
 from tg import session, redirect, request
-from tg.controllers.tgcontroller import TGController
 from tg.decorators import expose
 
+from com.keksovmen.Controllers.AbstractController import AbstractController
 from com.keksovmen.Model.ModelInit import *
 from com.keksovmen.Model.Directory import *
 from com.keksovmen.Model.User import User
@@ -11,7 +11,7 @@ from com.keksovmen.Util import Form, FormField
 from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
 
 
-class DirectoryController(TGController):
+class DirectoryController(AbstractController):
 
 	@expose()
 	def index(self):
@@ -32,20 +32,28 @@ class DirectoryController(TGController):
 		return dict(current_dir=current_dir)
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
-	def create(self, parent: int, title=None, description=None):
-		form = self._getCreateForm(title, description, parent)
-		if request.method.lower() == "get" or not form.isFormValid():
-			return dict(form=form)
+	def create(self, parent_id: int, title=None, description=None):
+		result = super(DirectoryController, self).create(
+			parent_id=int(parent_id),
+			title=title,
+			description=description)
+		if "form" in result.keys():
+			return result
+		redirect("view?dir_id={}".format(result["model"].dir_id))
 
-		dir = Directory(title=title,
-						description=description,
-						creator=session['u_id'],
-						dir_id=User.generateDirectoryId(session['u_id']),
-						parent_id=parent)
-		ModelInit.session.add(dir)
-		ModelInit.session.commit()
-		dir.updateModification()
-		redirect("view?dir_id={}".format(dir.dir_id))
+	# form = self._getCreateForm(**kwargs)
+	# if request.method.lower() == "get" or not form.isFormValid():
+	# 	return dict(form=form)
+	#
+	# dir = Directory(title=title,
+	# 				description=description,
+	# 				creator=session['u_id'],
+	# 				dir_id=User.generateDirectoryId(session['u_id']),
+	# 				parent_id=parent)
+	# ModelInit.session.add(dir)
+	# ModelInit.session.commit()
+	# dir.updateModification()
+	# redirect("view?dir_id={}".format(dir.dir_id))
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	def edit(self, dir_id: int, title=None, description=None):
@@ -79,17 +87,17 @@ class DirectoryController(TGController):
 				checkNotZeroLength, zeroLengthMessage("Title")))
 		form.addField(FormField("description"))
 		form.addField(FormField("dir_id"))
-		form.addField(FormField("parent"))
+		form.addField(FormField("parent_id"))
 		form.addField(FormField("pageTitle"))
 		form.addField(FormField("button"))
 		form.addField(FormField("action"))
 		form.setValues(**kwargs)
 		return form
 
-	def _getCreateForm(self, title, description, parent_id) -> Form:
+	def _getCreateForm(self, parent_id, title, description) -> Form:
 		form = self._getDefaultForm(title=title,
 									description=description,
-									parent=parent_id,
+									parent_id=parent_id,
 									pageTitle="Create directory",
 									action="create",
 									button="Create")
@@ -119,3 +127,10 @@ class DirectoryController(TGController):
 									button="Delete")
 		form.addField(FormField("dir", dir))
 		return form
+
+	def _createModelObject(self, parent_id, title, description):
+		return Directory(title=title,
+						 description=description,
+						 creator=session['u_id'],
+						 dir_id=User.generateDirectoryId(session['u_id']),
+						 parent_id=parent_id)

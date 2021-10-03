@@ -1,11 +1,10 @@
-import abc
 from tg.controllers.tgcontroller import TGController
 from tg import request
 from com.keksovmen.Util import *
 from com.keksovmen.Model.ModelInit import ModelInit, updateInstance
 
 
-class AbstractController(TGController, metaclass=abc.ABCMeta):
+class AbstractController(TGController):
 
 	def create(self, **kwargs):
 		form = self._getCreateForm(**kwargs)
@@ -13,10 +12,10 @@ class AbstractController(TGController, metaclass=abc.ABCMeta):
 			return dict(form=form)
 		obj = self._createModelObject(**kwargs)
 		self._addToDb(obj)
-		if not kwargs["modelObject"]:
+		if "modelObject" not in kwargs.keys():
 			kwargs["modelObject"] = obj
 		self._actionAfterCreate(**kwargs)
-		pass
+		return dict(model=obj)
 
 	def edit(self, **kwargs):
 		pass
@@ -32,16 +31,13 @@ class AbstractController(TGController, metaclass=abc.ABCMeta):
 
 	def _addToDb(self, obj) -> None:
 		ModelInit.session.add(obj)
-		ModelInit.session.save()
+		ModelInit.session.commit()
 
-	@abc.abstractmethod
-	def _getCreateForm(self, **kwargs):
+	def _getCreateForm(self, **kwargs) -> Form:
 		pass
 
-	@abc.abstractmethod
 	def _createModelObject(self, **kwargs):
 		pass
 
-	@abc.abstractmethod
 	def _actionAfterCreate(self, **kwargs):
 		pass
