@@ -41,31 +41,15 @@ class DirectoryController(AbstractController):
 			return result
 		redirect("view?dir_id={}".format(result["model"].dir_id))
 
-	# form = self._getCreateForm(**kwargs)
-	# if request.method.lower() == "get" or not form.isFormValid():
-	# 	return dict(form=form)
-	#
-	# dir = Directory(title=title,
-	# 				description=description,
-	# 				creator=session['u_id'],
-	# 				dir_id=User.generateDirectoryId(session['u_id']),
-	# 				parent_id=parent)
-	# ModelInit.session.add(dir)
-	# ModelInit.session.commit()
-	# dir.updateModification()
-	# redirect("view?dir_id={}".format(dir.dir_id))
-
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	def edit(self, dir_id: int, title=None, description=None):
-		currDir = Directory.getDirectory(dir_id, session["u_id"])
-		if request.method.lower() == "get":
-			title = currDir.title
-			description = currDir.description
-
-		form = self._getEditForm(title, description, currDir)
-		if request.method.lower() == "get" or not form.isFormValid():
-			return dict(form=form)
-		updateInstance(currDir, title=title, description=description)
+		result = super(DirectoryController, self).edit(
+			dir_id=dir_id,
+			title=title,
+			description=description)
+		if "form" in result.keys():
+			return result
+		currDir = result["model"]
 		redirect("view?dir_id={}".format(
 			currDir.parent.dir_id if currDir.parent else 0))
 
@@ -106,15 +90,15 @@ class DirectoryController(AbstractController):
 			"Such title already exists in current directory")
 		return form
 
-	def _getEditForm(self, title, description, currDir: Directory) -> Form:
+	def _getEditForm(self, model: Directory, title, description, dir_id) -> Form:
 		form = self._getDefaultForm(title=title,
 									description=description,
-									dir_id=currDir.dir_id,
+									dir_id=dir_id,
 									pageTitle="Edit directory",
 									action="edit",
 									button="Save")
 		form.title.addCheckCondition(
-			lambda v: currDir.isEditTitleFree(title),
+			lambda v: model.isEditTitleFree(title),
 			"Such title already exists in current directory")
 		return form
 
@@ -134,3 +118,10 @@ class DirectoryController(AbstractController):
 						 creator=session['u_id'],
 						 dir_id=User.generateDirectoryId(session['u_id']),
 						 parent_id=parent_id)
+
+	def _getModelObject(self, dir_id, **kwargs) -> Directory:
+		return Directory.getDirectory(dir_id, session["u_id"])
+
+	def _updateFieldsOnGetEdit(self, model: Directory, kwargs: dict):
+		kwargs['title'] = model.title
+		kwargs['description'] = model.description
