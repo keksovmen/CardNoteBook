@@ -1,0 +1,52 @@
+.t_d, .center{
+    margin-top: 0px;
+}
+
+.t_d{
+    margin-bottom: 0px;
+}
+
+.main, .center{
+    text-align: center;
+}
+
+.main{
+    width: 60%;
+}
+
+.main .left{
+    display: inline-block;
+    width: 30%;
+}
+
+.main .right{
+    /* display: inline-block; */
+    width: 69%;
+    text-align: right;
+    float: right;
+}
+
+.table_holder{
+    margin: 16px auto 16px auto;
+    width: 80%;
+}
+
+.table_holder table{
+    width: 100%;
+}
+
+p.actions{
+    margin: 0px auto 0px auto;
+    text-align: right;
+    font-size: 12px;
+}
+
+.createButton::after{
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.createButton{
+    text-align: center;
+}

@@ -1,0 +1,17 @@
+<html>
+<head>
+</head>
+<body>
+<div align="right">
+    <py:if test="session.get('u_name', None)">
+        <p style="margin: 0px"><a href="/user/edit">Hi - ${session.get('u_name', None)}!</a></p>
+        <p style="margin: 0px"><a href="/user/logout">Logout</a></p>
+        <p style="margin: 0px"><a href="/user/delete">Delete ME</a></p>
+    </py:if>
+    <py:if test="not session.get('u_name', None)">
+        <p style="margin: 0px"><a href="/user/login">Login</a></p>
+        <p style="margin: 0px"><a href="/user/create">Register</a></p>
+    </py:if>
+</div>
+</body>
+</html>

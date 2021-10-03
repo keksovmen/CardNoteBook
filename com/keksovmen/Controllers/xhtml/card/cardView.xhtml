@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>${card.title}</title>
+    <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
+</head>
+<body>
+<span py:replace="h.createBackNavigation(card.parent_dir, True)"/>
+<div class="card_holder">
+    <div class="card_title_holder">
+        <p class="card_title">${card.title}</p>
+    </div>
+    <div class="card_description_holder">
+        <p class="card_description">${card.description}</p>
+    </div>
+    <div class="card_message_holder">
+        <p class="card_message">${card.message}</p>
+    </div>
+</div>
+</body>
+</html>

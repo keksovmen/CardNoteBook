@@ -1,0 +1,27 @@
+<html xmlns:py="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <title>${form.pageTitle.getValue()}</title>
+</head>
+<body>
+<div>
+    <form action="${form.action.getValue()}" method="post">
+        <py:if test="form.action.getValue() != 'delete'">
+            <py:if test="form.name.getError()">
+                <p style="color: red; font-size: 20px" py:content="form.name.getError()"/>
+            </py:if>
+            <label for="name">Name:</label><br/>
+            <input type="text" name="name" id="name" value="${form.name.getValue()}"/><br/>
+            <py:if test="form.password.getError()">
+                <p style="color: red; font-size: 20px" py:content="form.password.getError()"/>
+            </py:if>
+            <label for="password">Password:</label><br/>
+            <input type="text" name="password" id="password" value="${form.password.getValue()}"/><br/>
+        </py:if>
+        <py:if test="form.action.getValue() == 'delete'">
+            <p>Are you sure you want to be annihilated?</p>
+        </py:if>
+        <input type="submit" value="${form.button.getValue()}"/>
+    </form>
+</div>
+</body>
+</html>
