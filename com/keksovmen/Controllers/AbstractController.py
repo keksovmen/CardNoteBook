@@ -23,10 +23,14 @@ class AbstractController(TGController):
 			return dict(form=form)
 		self._updateInstance(model, **kwargs)
 		return dict(model=model)
-		pass
 
 	def delete(self, **kwargs) -> dict:
-		pass
+		model = self._getModelObject(**kwargs)
+		form = self._getDeleteForm(model)
+		if self._isGetOrInvalid(form):
+			return dict(form=form)
+		self._deleteModelObject(model)
+		return dict(model=model)
 
 	def _isRequestGet(self) -> bool:
 		return request.method.lower() == "get"
@@ -41,6 +45,10 @@ class AbstractController(TGController):
 	def _updateInstance(self, model, **kwargs):
 		updateInstance(model, **kwargs)
 
+	def _deleteModelObject(self, model):
+		ModelInit.session.delete(model)
+		ModelInit.session.commit()
+
 	def _getCreateForm(self, **kwargs) -> Form:
 		pass
 
@@ -54,4 +62,7 @@ class AbstractController(TGController):
 		pass
 
 	def _getEditForm(self, model, **kwargs) -> Form:
+		pass
+
+	def _getDeleteForm(self, model) -> Form:
 		pass

@@ -1,14 +1,11 @@
-import sqlalchemy
-import inspect
-from tg import session, redirect, request
+from tg import session, redirect
 from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
-from com.keksovmen.Model.ModelInit import *
+from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
 from com.keksovmen.Model.Directory import *
 from com.keksovmen.Model.User import User
 from com.keksovmen.Util import Form, FormField
-from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
 
 
 class DirectoryController(AbstractController):
@@ -55,12 +52,10 @@ class DirectoryController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	def delete(self, dir_id: int):
-		currDir = Directory.getDirectory(dir_id, session["u_id"])
-		form = self._getDeleteForm(currDir)
-		if request.method.lower() == "get":
-			return dict(form=form)
-		ModelInit.session.delete(currDir)
-		ModelInit.session.commit()
+		result = super(DirectoryController, self).delete(dir_id=dir_id)
+		if "form" in result.keys():
+			return result
+		currDir = result["model"]
 		redirect("view?dir_id={}".format(
 			currDir.parent.dir_id if currDir.parent else 0))
 
@@ -90,7 +85,10 @@ class DirectoryController(AbstractController):
 			"Such title already exists in current directory")
 		return form
 
-	def _getEditForm(self, model: Directory, title, description, dir_id) -> Form:
+	def _getEditForm(self, model: Directory,
+					 title,
+					 description,
+					 dir_id) -> Form:
 		form = self._getDefaultForm(title=title,
 									description=description,
 									dir_id=dir_id,
