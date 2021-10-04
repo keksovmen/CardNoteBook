@@ -36,7 +36,9 @@ class DirectoryController(AbstractController):
 			description=description)
 		if "form" in result.keys():
 			return result
-		redirect("view?dir_id={}".format(result["model"].dir_id))
+		currDir = result["model"]
+		currDir.updateModification()
+		redirect("view?dir_id={}".format(currDir.dir_id))
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	def edit(self, dir_id: int, title=None, description=None):
@@ -47,6 +49,7 @@ class DirectoryController(AbstractController):
 		if "form" in result.keys():
 			return result
 		currDir = result["model"]
+		currDir.updateModification()
 		redirect("view?dir_id={}".format(
 			currDir.parent.dir_id if currDir.parent else 0))
 
