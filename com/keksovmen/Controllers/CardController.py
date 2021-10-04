@@ -1,17 +1,14 @@
-import sqlalchemy
-import inspect
-from tg import session, redirect, request
-from tg.controllers.tgcontroller import TGController
+from tg import session, redirect
 from tg.decorators import expose
 
-from com.keksovmen.Model.ModelInit import *
+from com.keksovmen.Controllers.AbstractController import AbstractController
+from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
 from com.keksovmen.Model.Directory import *
 from com.keksovmen.Model.User import User
 from com.keksovmen.Util import Form, FormField
-from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
 
 
-class CardController(TGController):
+class CardController(AbstractController):
 	@expose()
 	def index(self):
 		pass
@@ -25,47 +22,33 @@ class CardController(TGController):
 			   title=None,
 			   description=None,
 			   message=None):
-		form = self._getCreateForm(dir_id, title, description, message)
-		if request.method.lower() == "get" or not form.isFormValid():
-			return dict(form=form)
-
-		card = Card(title=title,
-					description=description,
-					message=message,
-					dir_id=dir_id,
-					card_id=User.generateCardId(session['u_id']),
-					creator=session['u_id'])
-		ModelInit.session.add(card)
-		ModelInit.session.commit()
-		card.updateModification()
+		result = super(CardController, self).create(dir_id=dir_id,
+													title=title,
+													description=description,
+													message=message)
+		if "form" in result.keys():
+			return result
+		result['model'].updateModification()
 		redirect("/dir/view?dir_id={}".format(dir_id))
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	def edit(self, card_id, title=None, description=None, message=None):
-		card = Card.getCard(card_id, session['u_id'])
-		if request.method.lower() == "get":
-			title = card.title
-			description = card.description
-			message = card.message
-
-		form = self._getEditForm(title, description, message, card)
-		if request.method.lower() == "get" or not form.isFormValid():
-			return dict(form=form)
-		updateInstance(card,
-					   title=title,
-					   description=description,
-					   message=message)
+		result = super(CardController, self).edit(card_id=card_id,
+												  title=title,
+												  description=description,
+												  message=message)
+		if "form" in result.keys():
+			return result
+		card = result['model']
+		card.updateModification()
 		redirect("/dir/view?dir_id={}".format(card.dir_id))
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	def delete(self, card_id: int):
-		card = Card.getCard(card_id, session['u_id'])
-		form = self._getDeleteForm(card)
-		if request.method.lower() == "get":
-			return dict(form=form)
-		ModelInit.session.delete(card)
-		ModelInit.session.commit()
-		redirect("/dir/view?dir_id={}".format(card.dir_id))
+		result = super(CardController, self).delete(card_id=card_id)
+		if "form" in result.keys():
+			return result
+		redirect("/dir/view?dir_id={}".format(result['model'].dir_id))
 
 	def _getDefaultForm(self, **kwargs):
 		form = Form()
@@ -95,8 +78,12 @@ class CardController(TGController):
 			"Such title already exists in current directory")
 		return form
 
-	def _getEditForm(self, title, description, message, card: Card) -> Form:
-		form = self._getDefaultForm(card_id=card.card_id,
+	def _getEditForm(self, model: Card,
+					 card_id,
+					 title,
+					 description,
+					 message) -> Form:
+		form = self._getDefaultForm(card_id=card_id,
 									title=title,
 									description=description,
 									message=message,
@@ -104,7 +91,7 @@ class CardController(TGController):
 									button="Save",
 									action="edit")
 		form.title.addCheckCondition(
-			lambda v: card.isEditTitleFree(title),
+			lambda v: model.isEditTitleFree(title),
 			"Such title already exists in current directory")
 		return form
 
@@ -116,3 +103,19 @@ class CardController(TGController):
 									pageTitle="Delete card",
 									button="Delete",
 									action="delete")
+
+	def _createModelObject(self, title, description, message, dir_id) -> Card:
+		return Card(title=title,
+					description=description,
+					message=message,
+					dir_id=dir_id,
+					card_id=User.generateCardId(session['u_id']),
+					creator=session['u_id'])
+
+	def _getModelObject(self, card_id, **kwargs) -> Card:
+		return Card.getCard(card_id, session['u_id'])
+
+	def _updateFieldsOnGetEdit(self, model, kwargs: dict) -> None:
+		kwargs['title'] = model.title
+		kwargs['description'] = model.description
+		kwargs['message'] = model.message
