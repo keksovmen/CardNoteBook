@@ -7,80 +7,82 @@
 <py:include href="com/keksovmen/Controllers/xhtml/util/actionPanel.xhtml"/>
 <div class="table_holder">
     <span py:if="current_dir and current_dir.parent" py:replace="h.createBackNavigation(current_dir)"/>
-    <table align="center" border="3px">
+    <table align="center" class="dir_view">
+        <caption py:if="current_dir"><b>${current_dir.title}</b></caption>
         <thead>
-        <tr py:if="current_dir" style="text-align: center">
-            <td colspan="5"><b>${current_dir.title}</b></td>
-        </tr>
         <tr>
-            <td class="center">Icon</td>
-            <td class="main">Body</td>
-            <td class="center">Sub dirs</td>
-            <td class="center">Total cards</td>
-            <td class="center" nowrap="nowrap">Created<br/>Modified</td>
+            <th class="double_icon" colspan="2">Icon</th>
+            <th class="body_column">Body</th>
+            <th class="int_value">Sub dirs</th>
+            <th class="int_value">Total cards</th>
+            <th class="create_modified">Created<br/>Modified</th>
         </tr>
         </thead>
         <tbody py:if="current_dir">
         <py:for each="dir in current_dir.children">
-            <tr>
-                <td class="center"><img src="/dir.png"/></td>
-                <td>
-                    <dl class="t_d">
-                        <dt class="t_d"><a href="/dir/view?dir_id=${dir.dir_id}">${dir.title}</a></dt>
-                        <dd class="t_d">${dir.description}</dd>
+            <tr class="dir_row">
+                <td class="double_icon" colspan="2"><img src="/dir.png"/></td>
+                <td class="body_cell">
+                    <dl class="body_cell_up_value">
+                        <dt class="body_cell_value"><a href="/dir/view?dir_id=${dir.dir_id}">${dir.title}</a></dt>
+                        <dd class="body_cell_value">${dir.description}</dd>
                     </dl>
-                    <p class="actions">
-                        <a href="/dir/edit?dir_id=${dir.dir_id}">[edit]/</a>
-                        <a href="/dir/delete?dir_id=${dir.dir_id}">[delete]</a>
-                    </p>
+                    <div class="body_cell_down_value">
+                        <p class="actions">
+                            <a href="/dir/edit?dir_id=${dir.dir_id}">[edit]/</a>
+                            <a href="/dir/delete?dir_id=${dir.dir_id}">[delete]</a>
+                        </p>
+                    </div>
                 </td>
-                <td class="center">${dir.countSubDirs()}</td>
-                <td class="center">${dir.countCards()}</td>
-                <td class="center">
-                    <span>${dir.creation_time.isoformat(" ", "seconds")}</span><br/>
-                    <span>${dir.modification_time.isoformat(" ", "seconds")}</span>
+                <td>${dir.countSubDirs()}</td>
+                <td>${dir.countCards()}</td>
+                <td class="create_modified">
+                    <span>${h.prettyTime(dir.creation_time)}</span><br/>
+                    <span>${h.prettyTime(dir.modification_time)}</span>
                 </td>
             </tr>
             <py:for each="card in dir.cards[:2]">
-                <tr>
-                    <td class="center"><img src="/card.png"/></td>
-                    <td>
-                        <dl class="t_d">
-                            <dt class="t_d"><a href="/card/view?card_id=${card.card_id}">${card.title}</a></dt>
-                            <dd class="t_d">${card.description}</dd>
+                <tr class="card_row">
+                    <td class="empty_icon"/>
+                    <td class="single_icon"><img src="/card.png"/></td>
+                    <td class="body_cell" colspan="3">
+                        <dl class="body_cell_up_value">
+                            <dt class="body_cell_value"><a href="/card/view?card_id=${card.card_id}">${card.title}</a>
+                            </dt>
+                            <dd class="body_cell_value">${card.description}</dd>
                         </dl>
-                        <p class="actions">
-                            <a href="/card/edit?card_id=${card.card_id}">[edit]/</a>
-                            <a href="/card/delete?card_id=${card.card_id}">[delete]</a>
-                        </p>
+                        <div class="body_cell_down_value">
+                            <p class="actions">
+                                <a href="/card/edit?card_id=${card.card_id}">[edit]/</a>
+                                <a href="/card/delete?card_id=${card.card_id}">[delete]</a>
+                            </p>
+                        </div>
                     </td>
-                    <td class="center">Subs</td>
-                    <td class="center">cards</td>
-                    <td class="center">
-                        <span>${card.creation_time.isoformat(" ", "seconds")}</span><br/>
-                        <span>${card.modification_time.isoformat(" ", "seconds")}</span>
+                    <td class="create_modified">
+                        <span>${h.prettyTime(card.creation_time)}</span><br/>
+                        <span>${h.prettyTime(card.modification_time)}</span>
                     </td>
                 </tr>
             </py:for>
         </py:for>
         <py:for each="card in current_dir.cards">
-            <tr>
-                <td class="center"><img src="/card.png"/></td>
-                <td>
-                    <dl class="t_d">
-                        <dt class="t_d"><a href="/card/view?card_id=${card.card_id}">${card.title}</a></dt>
-                        <dd class="t_d">${card.description}</dd>
+            <tr class="card_row">
+                <td class="double_icon" colspan="2"><img src="/card.png"/></td>
+                <td class="body_cell" colspan="3">
+                    <dl class="body_cell_up_value">
+                        <dt class="body_cell_value"><a href="/card/view?card_id=${card.card_id}">${card.title}</a></dt>
+                        <dd class="body_cell_value">${card.description}</dd>
                     </dl>
-                    <p class="actions">
-                        <a href="/card/edit?card_id=${card.card_id}">[edit]/</a>
-                        <a href="/card/delete?card_id=${card.card_id}">[delete]</a>
-                    </p>
+                    <div class="body_cell_down_value">
+                        <p class="actions">
+                            <a href="/card/edit?card_id=${card.card_id}">[edit]/</a>
+                            <a href="/card/delete?card_id=${card.card_id}">[delete]</a>
+                        </p>
+                    </div>
                 </td>
-                <td class="center">Subs</td>
-                <td class="center">cards</td>
-                <td class="center">
-                    <span>${card.creation_time.isoformat(" ", "seconds")}</span><br/>
-                    <span>${card.modification_time.isoformat(" ", "seconds")}</span>
+                <td class="create_modified">
+                    <span>${h.prettyTime(card.creation_time)}</span><br/>
+                    <span>${h.prettyTime(card.modification_time)}</span>
                 </td>
             </tr>
         </py:for>

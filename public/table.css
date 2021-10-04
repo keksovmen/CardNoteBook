@@ -1,0 +1,93 @@
+.table_holder{
+    margin: 16px auto 16px auto;
+    width: 80%;
+}
+
+table.dir_view{
+    width: 100%;
+    border: 3px solid;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 18px;
+}
+
+table.dir_view thead,
+table.dir_view tbody,
+table.dir_view tfoot,
+table.dir_view tr,
+table.dir_view th,
+table.dir_view td{
+    border: inherit;
+    text-align: inherit;
+}
+
+table.dir_view .double_icon{
+    max-width: 64px;
+    min-width: 64px;
+    width: 64px;
+    height: 32px;
+}
+
+table.dir_view .single_icon,
+table.dir_view .empty_icon{
+    max-width: 32px;
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+}
+
+table.dir_view .empty_icon{
+    border: none;
+}
+
+table.dir_view .int_value{
+    width: 5%;
+    white-space: nowrap;
+}
+
+table.dir_view .create_modified{
+    width: 10%;
+    white-space: nowrap;
+}
+
+table.dir_view .body_column{
+    width: 80%;
+}
+
+table.dir_view .body_cell{
+    text-align: left;
+    position: relative;
+    height: 50px;
+}
+
+table.dir_view .body_cell_value,
+table.dir_view .body_cell_up_value,
+table.dir_view .body_cell_down_value{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+table.dir_view .body_cell_up_value{
+    position: absolute;
+    top: 0px;
+}
+
+table.dir_view .body_cell_down_value{
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+}
+
+table.dir_view .actions{
+    margin: 0px auto 0px auto;
+    text-align: right;
+    font-size: 12px;
+}
+
+table.dir_view .dir_row{
+    background-color: khaki;
+}
+
+table.dir_view .card_row{
+    background-color: #f99f9f;
+}
