@@ -26,3 +26,7 @@ def checkNotZeroLength(value) -> bool:
 
 def zeroLengthMessage(fieldName: str) -> str:
 	return f"{fieldName} must contain at least 1 symbol"
+
+
+def prettyTime(datetime):
+	return datetime.strftime("%d.%m.%Y %H:%M")
