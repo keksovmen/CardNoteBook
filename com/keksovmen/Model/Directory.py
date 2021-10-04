@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
-	UniqueConstraint, PrimaryKeyConstraint, Text, ForeignKeyConstraint
-from sqlalchemy.orm import relationship, backref, remote
-
+from datetime import datetime
 from typing import List
+
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
+	UniqueConstraint, PrimaryKeyConstraint
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.expression import desc
 
 from com.keksovmen.Model.Card import Card
 from com.keksovmen.Model.ModelInit import ModelInit
-
-from datetime import datetime
 
 
 class Directory(ModelInit.DeclarativeBase):
@@ -38,6 +38,7 @@ class Directory(ModelInit.DeclarativeBase):
 										"Directory.creator==Directory.creator)",
 							remote_side=[parent_id, creator],
 							cascade="all, delete, delete-orphan",
+							order_by=desc(modification_time),
 							back_populates="parent")
 
 	# user = relationship("User", back_populates="dirs")
@@ -45,7 +46,7 @@ class Directory(ModelInit.DeclarativeBase):
 						 primaryjoin="and_(Directory.dir_id==Card.dir_id, "
 									 "Directory.creator==Card.creator)",
 						 back_populates="parent_dir",
-						 order_by=Card.modification_time,
+						 order_by=desc(Card.modification_time),
 						 cascade="all, delete, delete-orphan")
 
 	@staticmethod
