@@ -32,6 +32,9 @@ class FormField:
 	def setValue(self, value):
 		self._value = value
 
+	def clearAllValidationChecks(self):
+		self._conditions.clear()
+
 	def _cleanError(self):
 		self._error = ""
 
@@ -54,6 +57,10 @@ class Form:
 	def setValues(self, **kwargs):
 		for k, v in kwargs.items():
 			self.fields[k].setValue(v)
+
+	def clearAllValidationChecks(self):
+		for f in self.fields.values():
+			f.clearAllValidationChecks()
 
 	def __getattr__(self, item):
 		return self.fields[item]

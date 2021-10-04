@@ -6,7 +6,7 @@
 <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
 <py:include href="com/keksovmen/Controllers/xhtml/util/actionPanel.xhtml"/>
 <div class="table_holder">
-    <span py:if="current_dir.parent" py:replace="h.createBackNavigation(current_dir)"/>
+    <span py:if="current_dir and current_dir.parent" py:replace="h.createBackNavigation(current_dir)"/>
     <table align="center" border="3px">
         <thead>
         <tr py:if="current_dir" style="text-align: center">
