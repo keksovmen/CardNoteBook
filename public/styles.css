@@ -7,3 +7,16 @@
 .createButton{
     text-align: center;
 }
+
+a:link, a:visited{
+    color: blue;
+}
+
+.back_navigation{
+    margin: 16px 32px;
+}
+
+html{
+    font-size: 18px;
+    background-color: beige;
+}

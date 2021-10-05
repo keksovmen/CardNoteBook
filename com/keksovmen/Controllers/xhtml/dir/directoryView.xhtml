@@ -6,16 +6,15 @@
 <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
 <py:include href="com/keksovmen/Controllers/xhtml/util/actionPanel.xhtml"/>
 <div class="table_holder">
-    <span py:if="current_dir and current_dir.parent" py:replace="h.createBackNavigation(current_dir)"/>
+    <span py:if="current_dir" py:replace="h.createBackNavigation(current_dir)"/>
     <table align="center" class="dir_view">
-        <caption py:if="current_dir"><b>${current_dir.title}</b></caption>
         <thead>
-        <tr>
-            <th class="double_icon" colspan="2">Icon</th>
+        <tr class="header_row">
+            <th class="double_icon" colspan="2">Type</th>
             <th class="body_column">Body</th>
             <th class="int_value">Sub dirs</th>
             <th class="int_value">Total cards</th>
-            <th class="create_modified">Created<br/>Modified</th>
+            <th class="create_modified">Modified<br/>Created</th>
         </tr>
         </thead>
         <tbody py:if="current_dir">
@@ -23,22 +22,35 @@
             <tr class="dir_row">
                 <td class="double_icon" colspan="2"><img src="/dir.png"/></td>
                 <td class="body_cell">
-                    <dl class="body_cell_up_value">
-                        <dt class="body_cell_value"><a href="/dir/view?dir_id=${dir.dir_id}">${dir.title}</a></dt>
-                        <dd class="body_cell_value">${dir.description}</dd>
-                    </dl>
-                    <div class="body_cell_down_value">
-                        <p class="actions">
-                            <a href="/dir/edit?dir_id=${dir.dir_id}">[edit]/</a>
-                            <a href="/dir/delete?dir_id=${dir.dir_id}">[delete]</a>
-                        </p>
-                    </div>
+                    <table class="body_align" py:def="alignBody(controller, idTypo, id, title, description)">
+                        <tr class="top_row">
+                            <td colspan="2">
+                                <dl class="body_cell_value">
+                                    <dt class="body_cell_value"><a
+                                            href="/${controller}/view?${idTypo}=${id}">${title}</a>
+                                    </dt>
+                                    <dd class="body_cell_value">${description}</dd>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr class="bottom_row">
+                            <td class="bottom_row_left"/>
+                            <td>
+                                <p class="actions">
+                                    <a href="/${controller}/edit?${idTypo}=${id}">[edit]/</a>
+                                    <a href="/${controller}/delete?${idTypo}=${id}">[delete]</a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    ${alignBody("dir", "dir_id", dir.dir_id, dir.title, dir.description)}
+
                 </td>
                 <td>${dir.countSubDirs()}</td>
                 <td>${dir.countCards()}</td>
                 <td class="create_modified">
-                    <span>${h.prettyTime(dir.creation_time)}</span><br/>
-                    <span>${h.prettyTime(dir.modification_time)}</span>
+                    <span>${h.prettyTime(dir.modification_time)}</span><br/>
+                    <span>${h.prettyTime(dir.creation_time)}</span>
                 </td>
             </tr>
             <py:for each="card in dir.cards[:2]">
@@ -46,21 +58,11 @@
                     <td class="empty_icon"/>
                     <td class="single_icon"><img src="/card.png"/></td>
                     <td class="body_cell" colspan="3">
-                        <dl class="body_cell_up_value">
-                            <dt class="body_cell_value"><a href="/card/view?card_id=${card.card_id}">${card.title}</a>
-                            </dt>
-                            <dd class="body_cell_value">${card.description}</dd>
-                        </dl>
-                        <div class="body_cell_down_value">
-                            <p class="actions">
-                                <a href="/card/edit?card_id=${card.card_id}">[edit]/</a>
-                                <a href="/card/delete?card_id=${card.card_id}">[delete]</a>
-                            </p>
-                        </div>
+                        ${alignBody("card", "card_id", card.card_id, card.title, card.description)}
                     </td>
                     <td class="create_modified">
-                        <span>${h.prettyTime(card.creation_time)}</span><br/>
-                        <span>${h.prettyTime(card.modification_time)}</span>
+                        <span>${h.prettyTime(card.modification_time)}</span><br/>
+                        <span>${h.prettyTime(card.creation_time)}</span>
                     </td>
                 </tr>
             </py:for>
@@ -69,20 +71,11 @@
             <tr class="card_row">
                 <td class="double_icon" colspan="2"><img src="/card.png"/></td>
                 <td class="body_cell" colspan="3">
-                    <dl class="body_cell_up_value">
-                        <dt class="body_cell_value"><a href="/card/view?card_id=${card.card_id}">${card.title}</a></dt>
-                        <dd class="body_cell_value">${card.description}</dd>
-                    </dl>
-                    <div class="body_cell_down_value">
-                        <p class="actions">
-                            <a href="/card/edit?card_id=${card.card_id}">[edit]/</a>
-                            <a href="/card/delete?card_id=${card.card_id}">[delete]</a>
-                        </p>
-                    </div>
+                    ${alignBody("card", "card_id", card.card_id, card.title, card.description)}
                 </td>
                 <td class="create_modified">
-                    <span>${h.prettyTime(card.creation_time)}</span><br/>
-                    <span>${h.prettyTime(card.modification_time)}</span>
+                    <span>${h.prettyTime(card.modification_time)}</span><br/>
+                    <span>${h.prettyTime(card.creation_time)}</span>
                 </td>
             </tr>
         </py:for>
