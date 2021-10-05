@@ -23,6 +23,14 @@ def createBackNavigation(dir: Directory, isCardView: bool = False) -> str:
 					   class_="back_navigation")
 
 
+def createBackNavigationFromId(dir_id: int,
+							   user_id: int,
+							   isCardView: bool) -> str:
+	return createBackNavigation(Directory.getDirectory(dir_id,
+													   user_id),
+													   isCardView)
+
+
 def checkNotZeroLength(value) -> bool:
 	return isinstance(value, str) and len(value) != 0
 

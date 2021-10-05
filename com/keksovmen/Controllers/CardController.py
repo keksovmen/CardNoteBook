@@ -87,6 +87,7 @@ class CardController(AbstractController):
 									title=title,
 									description=description,
 									message=message,
+									dir_id=model.dir_id,
 									pageTitle="Edit card",
 									button="Save",
 									action="edit")
@@ -100,6 +101,7 @@ class CardController(AbstractController):
 									card_id=card.card_id,
 									description=card.description,
 									message=card.message,
+									dir_id=card.dir_id,
 									pageTitle="Delete card",
 									button="Delete",
 									action="delete")
