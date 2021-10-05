@@ -1,0 +1,38 @@
+.card_holder{
+    margin: 16px auto;
+    max-width: 700px;
+    padding: 10px;
+    border: 3px solid black;
+    border-radius: 10px;
+    background-color: #Ff9f9f;
+}
+
+.card_holder p{
+    margin: 18px 10px;
+}
+
+.card_title_holder{
+    width: 70%;
+    /* border: 3px inset; */
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.card_description_holder{
+    /* border: 3px inset; */
+    text-align: justify;
+    margin-bottom: 10px;
+}
+
+.card_message_holder{
+    /* border: 3px inset; */
+    text-align: justify;
+    min-height: 200px;
+}
+
+.card_title_holder,
+.card_description_holder,
+.card_message_holder{
+    border: 5px inset beige;
+    border-radius: 20px;
+}
