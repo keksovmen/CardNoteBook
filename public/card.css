@@ -11,21 +11,38 @@
     margin: 18px 10px;
 }
 
+.card_holder input,
+.card_holder textarea{
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 0px;
+    margin-bottom: 16px;
+    resize: none;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.card_holder input[type=submit]:hover{
+    background-color: lightgray;
+}
+
+.card_holder input.form_send{
+    margin: 0px !important;
+}
+
 .card_title_holder{
     width: 70%;
-    /* border: 3px inset; */
     text-align: left;
     margin-bottom: 10px;
 }
 
 .card_description_holder{
-    /* border: 3px inset; */
     text-align: justify;
     margin-bottom: 10px;
 }
 
 .card_message_holder{
-    /* border: 3px inset; */
     text-align: justify;
     min-height: 200px;
 }
@@ -36,3 +53,5 @@
     border: 5px inset beige;
     border-radius: 20px;
 }
+
+
