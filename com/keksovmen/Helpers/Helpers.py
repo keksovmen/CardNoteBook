@@ -5,17 +5,20 @@ from functools import reduce
 from html import unescape
 
 
-def createBackNavigation(dir: Directory, appendCurrent: bool = False) -> str:
+def createBackNavigation(dir: Directory, isCardView: bool = False) -> str:
 	builder = HTMLBuilder()
-	result = []
-	parents = dir.getParents()
-	if appendCurrent:
-		parents.insert(0, dir)
-	for parent in reversed(parents):
-		result.append(builder.tag("a", unescape(f"&larr;{parent.title}"),
-								  href=f"/dir/view?dir_id={parent.dir_id}"))
-	if not result:
-		return ""
+	result = [builder.tag("strong", _closed=False)]
+	for index, parent in enumerate(reversed(dir.getParents())):
+		if index != 0:
+			result.append(" \ ")
+		result.append(__getHrefTag(parent))
+	if len(result) > 1:
+		result.append(" \ ")
+	if isCardView:
+		result.append(__getHrefTag(dir))
+	else:
+		result.append(__getSpanTag(dir))
+	result.append(builder.tag("/strong", _closed=False))
 	return builder.tag("div", reduce(lambda t, v: t + v, result),
 					   class_="back_navigation")
 
@@ -30,3 +33,12 @@ def zeroLengthMessage(fieldName: str) -> str:
 
 def prettyTime(datetime):
 	return datetime.strftime("%d.%m.%Y %H:%M")
+
+
+def __getHrefTag(dir: Directory) -> webhelpers2.html.literal:
+	return HTMLBuilder().tag("a", unescape(f"{dir.title}"),
+							 href=f"/dir/view?dir_id={dir.dir_id}")
+
+
+def __getSpanTag(dir: Directory) -> webhelpers2.html.literal:
+	return HTMLBuilder().tag("span", unescape(f"{dir.title}"))
