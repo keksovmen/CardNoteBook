@@ -1,25 +1,38 @@
 <html>
 <head>
     <title>${form.pageTitle.getValue()}</title>
+    <py:include href="public/header.xhtml"/>
 </head>
 <body>
 <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
-<form action="${form.action.getValue()}" method="post">
-    <input type="hidden" name="dir_id" id="dir_id" value="${form.dir_id.getValue()}"/>
-    <py:if test="form.action.getValue() != 'delete'">
-        <input type="hidden" name="parent_id" id="parent_id" value="${form.parent_id.getValue()}"/>
-        <label for="title">Title:
-            <span py:if="form.title.getError()" style="color: red">${form.title.getError()}</span>
-        </label><br/>
-        <input type="text" name="title" id="title" value="${form.title.getValue()}"/><br/>
-        <label for="description">Description:</label><br/>
-        <input type="text" name="description" id="description" value="${form.description.getValue()}"/><br/>
-    </py:if>
-    <py:if test="form.action.getValue() == 'delete'">
-        <p>Are you sure you want to delete <b>${form.dir.getValue().title}</b> directory with <b>${form.dir.getValue().countSubDirs()}</b> sub
-            dirs and total <b>${form.dir.getValue().countCards()}</b> cards in them?</p>
-    </py:if>
-    <input type="submit" value="${form.button.getValue()}"/>
-</form>
+<div class="table_holder">
+    <span py:replace="h.createBackNavigationFromId(form.parent_id.getValue(), session.get('u_id', None), True)"/>
+</div>
+<div class="dir_holder">
+    <form action="${form.action.getValue()}" method="post">
+        <input type="hidden" name="dir_id" id="dir_id" value="${form.dir_id.getValue()}"/>
+        <py:if test="form.action.getValue() != 'delete'">
+            <input type="hidden" name="parent_id" id="parent_id" value="${form.parent_id.getValue()}"/>
+            <div class="dir_title">
+                <label for="title">Title:
+                    <span py:if="form.title.getError()" style="color: red">${form.title.getError()}</span>
+                </label><br/>
+                <input type="text" name="title" id="title" value="${form.title.getValue()}"/><br/>
+            </div>
+            <div class="dir_description">
+                <label for="description">Description:</label><br/>
+                <textarea rows="5" cols="3" name="description" id="description"
+                          py:content="form.description.getValue()"/>
+            </div>
+        </py:if>
+        <div class="spacer"></div>
+        <py:if test="form.action.getValue() == 'delete'">
+            <p>Are you sure you want to delete <b>${form.dir.getValue().title}</b> directory with <b>${form.dir.getValue().countSubDirs()}</b>
+                sub
+                dirs and total <b>${form.dir.getValue().countCards()}</b> cards in them?</p>
+        </py:if>
+        <input class="form_send" type="submit" value="${form.button.getValue()}"/>
+    </form>
+</div>
 </body>
 </html>

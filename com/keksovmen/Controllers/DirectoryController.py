@@ -95,6 +95,7 @@ class DirectoryController(AbstractController):
 		form = self._getDefaultForm(title=title,
 									description=description,
 									dir_id=dir_id,
+									parent_id=model.parent_id,
 									pageTitle="Edit directory",
 									action="edit",
 									button="Save")
@@ -107,6 +108,7 @@ class DirectoryController(AbstractController):
 		form = self._getDefaultForm(title=dir.title,
 									description=dir.description,
 									dir_id=dir.dir_id,
+									parent_id=dir.parent_id,
 									pageTitle="Delete directory",
 									action="delete",
 									button="Delete")
