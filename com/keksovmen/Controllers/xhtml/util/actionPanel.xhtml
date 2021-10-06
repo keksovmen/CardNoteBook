@@ -1,14 +1,21 @@
 <html>
 <head>
-
 </head>
 <body>
 <py:if test="current_dir">
-    <div>
-        <a href="/dir/create?parent_id=${current_dir.dir_id}">
-            <img style="float: right; clear: right;" src="/addDir.png" alt="Create directory"/></a>
-        <a href="/card/create?dir_id=${current_dir.dir_id}">
-            <img style="float: right; clear: right;" src="/addCard.png" alt="Create card"/></a>
+    <div class="action_panel_holder">
+        <div class="action_panel">
+            <div class="column">
+                <a href="/dir/create?parent_id=${current_dir.dir_id}">
+                    <div class="add_dir_button"><span style="color: green">Add</span> directory</div>
+                </a>
+            </div>
+            <div class="column">
+                <a href="/card/create?dir_id=${current_dir.dir_id}">
+                    <div class="add_card_button"><span style="color: green">Add</span> card</div>
+                </a>
+            </div>
+        </div>
     </div>
 </py:if>
 </body>

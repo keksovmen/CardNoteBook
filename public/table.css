@@ -117,3 +117,7 @@ table.body_align tr,
 table.body_align td{
     padding: 0px;
 }
+
+table dt.body_cell_value{
+    font-weight: bold;
+}
