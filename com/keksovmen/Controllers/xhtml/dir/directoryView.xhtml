@@ -3,9 +3,9 @@
     <py:include href="public/header.xhtml"/>
 </head>
 <body>
-<py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
-<py:include href="com/keksovmen/Controllers/xhtml/util/actionPanel.xhtml"/>
 <div class="table_holder">
+    <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
+    <py:include href="com/keksovmen/Controllers/xhtml/util/actionPanel.xhtml"/>
     <span py:if="current_dir" py:replace="h.createBackNavigation(current_dir)"/>
     <table align="center" class="dir_view">
         <thead>

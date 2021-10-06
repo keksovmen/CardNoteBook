@@ -4,9 +4,9 @@
     <py:include href="public/header.xhtml"/>
 </head>
 <body>
-<py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
 <div class="table_holder">
-        <span py:replace="h.createBackNavigationFromId(form.dir_id.getValue(), session.get('u_id', None), True)"/>
+    <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
+    <span py:replace="h.createBackNavigationFromId(form.dir_id.getValue(), session.get('u_id', None), True)"/>
 </div>
 <div class="card_holder">
     <form action="${form.action.getValue()}" method="post">
