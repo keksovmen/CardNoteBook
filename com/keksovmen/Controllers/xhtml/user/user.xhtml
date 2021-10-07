@@ -1,26 +1,32 @@
-<html xmlns:py="http://www.w3.org/1999/XSL/Transform">
+<html>
 <head>
     <title>${form.pageTitle.getValue()}</title>
+    <py:include href="public/header.xhtml"/>
 </head>
 <body>
-<div>
-    <form action="${form.action.getValue()}" method="post">
+<div class="table_holder">
+    <div class="user_buttons_holder">
+        <a class="button_ref" href="/user/view">
+            <div class="button">Back</div>
+        </a>
+    </div>
+    <form class="user_form_holder" action="${form.action.getValue()}" method="post">
         <py:if test="form.action.getValue() != 'delete'">
-            <py:if test="form.name.getError()">
-                <p style="color: red; font-size: 20px" py:content="form.name.getError()"/>
-            </py:if>
-            <label for="name">Name:</label><br/>
-            <input type="text" name="name" id="name" value="${form.name.getValue()}"/><br/>
-            <py:if test="form.password.getError()">
-                <p style="color: red; font-size: 20px" py:content="form.password.getError()"/>
-            </py:if>
-            <label for="password">Password:</label><br/>
-            <input type="text" name="password" id="password" value="${form.password.getValue()}"/><br/>
+            <div class="error_user_grid" py:if="form.name.getError()">
+                <span class="error" py:content="form.name.getError()"/>
+            </div>
+            <div class="user_input_label"><label for="name">Name:</label></div>
+            <div class="user_input_field"><input type="text" name="name" id="name" value="${form.name.getValue()}"/></div>
+            <div class="error_user_grid" py:if="form.password.getError()">
+                <span class="error" py:content="form.password.getError()"/>
+            </div>
+            <div class="user_input_label"><label for="password">Password:</label></div>
+            <div class="user_input_field"><input type="text" name="password" id="password" value="${form.password.getValue()}"/></div>
         </py:if>
         <py:if test="form.action.getValue() == 'delete'">
-            <p>Are you sure you want to be annihilated?</p>
+            <div class="state_holder">Are you sure you want to be annihilated?</div>
         </py:if>
-        <input type="submit" value="${form.button.getValue()}"/>
+        <div class="user_submit"><input type="submit" value="${form.button.getValue()}"/></div>
     </form>
 </div>
 </body>

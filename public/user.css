@@ -1,0 +1,57 @@
+.user_data_holder,
+.user_form_holder{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    width: fit-content;
+    margin: auto;
+    text-align: center;
+}
+
+.user_form_holder{
+    min-width: 400px;
+    clear: both;
+    align-items: center;
+}
+
+.user_form_holder input{
+    width: 100%;
+    padding: 5px;
+}
+
+.state_holder, .state_spacer{
+    grid-column: 1 / 3;
+}
+
+.state_spacer{
+    border-bottom: 1px solid black;
+}
+
+.user_buttons_holder{
+    display: grid;
+    grid-template-columns: auto;
+    float: right;
+}
+
+.user_guide_holder{
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: end;
+}
+
+.error_user_grid{
+    grid-column: 1 / 3;
+    text-align: center;
+}
+
+.user_submit{
+    grid-column: 1 / 3;
+}
+
+.user_input_label{
+    text-align: left;
+}
+
+.user_input_field{
+    display: flex;
+}
