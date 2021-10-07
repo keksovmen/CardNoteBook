@@ -41,7 +41,7 @@ html{
     padding: 10px;
     text-align: center;
     color: black;
-    background-color: #e2e289;
+    background-color: #a7a7a7;
     border: 1px solid black;
     white-space: nowrap;
     text-decoration: none;
@@ -95,3 +95,10 @@ html{
     grid-template-columns: auto;
     float: right;
 }
+
+.user_guide_holder{
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: end;
+}
+
