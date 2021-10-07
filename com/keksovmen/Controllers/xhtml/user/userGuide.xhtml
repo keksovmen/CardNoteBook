@@ -4,7 +4,7 @@
 <body>
 <div align="right">
     <py:if test="session.get('u_name', None)">
-        <p style="margin: 0px"><a href="/user/edit">Hi - ${session.get('u_name', None)}!</a></p>
+        <p style="margin: 0px"><a href="/user/view">Hi - ${session.get('u_name', None)}!</a></p>
         <p style="margin: 0px"><a href="/user/logout">Logout</a></p>
         <p style="margin: 0px"><a href="/user/delete">Delete ME</a></p>
     </py:if>

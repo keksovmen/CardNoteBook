@@ -1,5 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.expression import desc
+
+from com.keksovmen.Model.Card import Card
 from com.keksovmen.Model.ModelInit import ModelInit
 from com.keksovmen.Model.Directory import Directory
 
@@ -17,9 +20,13 @@ class User(ModelInit.DeclarativeBase):
 	owned_cards = Column(type_=Integer, default=0)
 
 	dirs = relationship("Directory",
-						order_by=Directory.creation_time,
+						order_by=desc(Directory.creation_time),
 						# back_populates="user",
 						cascade="all, delete, delete-orphan")
+
+	cards = relationship("Card",
+						 order_by=desc(Card.creation_time),
+						 cascade="all, delete, delete-orphan")
 
 	def isEditNameFree(self, name):
 		return ModelInit.session.query(User) \

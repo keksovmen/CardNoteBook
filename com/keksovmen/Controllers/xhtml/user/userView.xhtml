@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>User view</title>
+    <py:include href="public/header.xhtml"/>
+</head>
+<body>
+<div class="table_holder">
+    <div class="user_buttons_holder">
+        <a class="button_ref" href="edit">
+            <div class="button"><span style="color: #a57b07">Edit</span> profile</div>
+        </a>
+        <a class="button_ref" href="delete">
+            <div class="button"><span style="color: red">Delete</span> profile</div>
+        </a>
+        <a class="button_ref" href="logout">
+            <div class="button">Logout</div>
+        </a>
+        <a class="button_ref" href="/dir/view">
+            <div class="button">Back</div>
+        </a>
+    </div>
+    <div class="user_data_holder">
+        <div class="name_holder">Name:</div>
+        <div>${user.name}</div>
+        <div class="registration_date_holder">Registration:</div>
+        <div>${h.prettyTime(user.reg_time)}</div>
+        <div class="state_spacer"></div>
+        <div class="state_holder"><strong>STATS:</strong></div>
+        <div class="current_dirs">Current dirs amount:</div>
+        <div>${len(user.dirs)}</div>
+        <div class="current_cards">Current cards amount:</div>
+        <div>${len(user.cards)}</div>
+        <div class="total_dirs">Total dirs were created:</div>
+        <div>${user.owned_dirs}</div>
+        <div class="total_cards">Total cards were created:</div>
+        <div>${user.owned_cards}</div>
+    </div>
+</div>
+</body>
+</html>

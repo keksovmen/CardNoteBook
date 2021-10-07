@@ -15,6 +15,11 @@ class UserController(AbstractController):
 	def index(self):
 		redirect()
 
+	@expose("com/keksovmen/Controllers/xhtml/user/userView.xhtml")
+	def view(self):
+		me = User.getMe(session)
+		return dict(user=me)
+
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
 	def login(self, name=None, password=None):
 		form = self._getLoginForm(name, password)
