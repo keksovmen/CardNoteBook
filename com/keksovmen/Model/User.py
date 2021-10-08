@@ -68,6 +68,6 @@ class User(ModelInit.DeclarativeBase):
 			User.name == name).count() == 0
 
 	@staticmethod
-	def getMe(session):
+	def getMe(user_id):
 		return ModelInit.session.query(User).filter(
-			User.u_id == session.get("u_id", None)).first()
+			User.u_id == user_id).first()

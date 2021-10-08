@@ -17,7 +17,7 @@ class UserController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/user/userView.xhtml")
 	def view(self):
-		me = User.getMe(session)
+		me = User.getMe(session.get('u_id', None))
 		return dict(user=me)
 
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
@@ -131,7 +131,7 @@ class UserController(AbstractController):
 		return me
 
 	def _getModelObject(self, **kwargs) -> User:
-		return User.getMe(session)
+		return User.getMe(session.get('u_id', None))
 
 	def _updateFieldsOnGetEdit(self, model: User, kwargs: dict) -> None:
 		kwargs['name'] = model.name
