@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint, PrimaryKeyConstraint, Text
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
+	UniqueConstraint, PrimaryKeyConstraint, Text
 from sqlalchemy.orm import relationship, backref
 from com.keksovmen.Model.ModelInit import ModelInit
 
@@ -13,7 +14,8 @@ class Card(ModelInit.DeclarativeBase):
 	description = Column(String(1024), nullable=True)
 	message = Column(Text, nullable=True)
 	creation_time = Column(DateTime, default=datetime.now)
-	modification_time = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+	modification_time = Column(DateTime, default=datetime.now,
+							   onupdate=datetime.now)
 	creator = Column(Integer, ForeignKey("users.u_id"), nullable=False)
 	dir_id = Column(Integer, ForeignKey("directories.dir_id"), nullable=False)
 

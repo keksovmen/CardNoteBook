@@ -15,17 +15,19 @@ class CardController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/card/cardView.xhtml")
 	def view(self, card_id):
-		return dict(card=Card.getCard(card_id, session['u_id']))
+		return dict(card=Card.getCard(card_id, session.get('u_id', None)))
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	def create(self, dir_id: int = 0,
 			   title=None,
 			   description=None,
 			   message=None):
-		result = super(CardController, self).create(dir_id=dir_id,
-													title=title,
-													description=description,
-													message=message)
+		result = super(CardController, self) \
+			.create(dir_id=dir_id,
+					title=title,
+					description=description,
+					message=message,
+					user_id=session.get('u_id', None))
 		if "form" in result.keys():
 			return result
 		result['model'].updateModification()
@@ -33,10 +35,12 @@ class CardController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	def edit(self, card_id, title=None, description=None, message=None):
-		result = super(CardController, self).edit(card_id=card_id,
-												  title=title,
-												  description=description,
-												  message=message)
+		result = super(CardController, self) \
+			.edit(card_id=card_id,
+				  title=title,
+				  description=description,
+				  message=message,
+				  user_id=session.get('u_id', None))
 		if "form" in result.keys():
 			return result
 		card = result['model']
@@ -45,7 +49,9 @@ class CardController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	def delete(self, card_id: int):
-		result = super(CardController, self).delete(card_id=card_id)
+		result = super(CardController, self) \
+			.delete(card_id=card_id,
+					user_id=session.get('u_id', None))
 		if "form" in result.keys():
 			return result
 		redirect("/dir/view?dir_id={}".format(result['model'].dir_id))
@@ -65,7 +71,7 @@ class CardController(AbstractController):
 		form.setValues(**kwargs)
 		return form
 
-	def _getCreateForm(self, dir_id, title, description, message) -> Form:
+	def _getCreateForm(self, dir_id, title, description, message, user_id) -> Form:
 		form = self._getDefaultForm(dir_id=dir_id,
 									title=title,
 									description=description,
@@ -74,7 +80,7 @@ class CardController(AbstractController):
 									button="Create",
 									action="create")
 		form.title.addCheckCondition(
-			lambda v: Card.isNameFree(v, dir_id, session['u_id']),
+			lambda v: Card.isNameFree(v, dir_id, user_id),
 			"Such title already exists in current directory")
 		return form
 
@@ -82,7 +88,8 @@ class CardController(AbstractController):
 					 card_id,
 					 title,
 					 description,
-					 message) -> Form:
+					 message,
+					 **kwargs) -> Form:
 		form = self._getDefaultForm(card_id=card_id,
 									title=title,
 									description=description,
@@ -106,16 +113,16 @@ class CardController(AbstractController):
 									button="Delete",
 									action="delete")
 
-	def _createModelObject(self, title, description, message, dir_id) -> Card:
+	def _createModelObject(self, title, description, message, dir_id, user_id) -> Card:
 		return Card(title=title,
 					description=description,
 					message=message,
 					dir_id=dir_id,
-					card_id=User.generateCardId(session['u_id']),
-					creator=session['u_id'])
+					card_id=User.generateCardId(user_id),
+					creator=user_id)
 
-	def _getModelObject(self, card_id, **kwargs) -> Card:
-		return Card.getCard(card_id, session['u_id'])
+	def _getModelObject(self, card_id, user_id, **kwargs) -> Card:
+		return Card.getCard(card_id, user_id)
 
 	def _updateFieldsOnGetEdit(self, model, kwargs: dict) -> None:
 		kwargs['title'] = model.title
