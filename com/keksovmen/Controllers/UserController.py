@@ -18,12 +18,12 @@ class UserController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/user/userView.xhtml")
 	@authenticated
-	def view(self):
+	def view(self, **kwargs):
 		me = User.getMe(session.get('u_id', None))
 		return dict(user=me)
 
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
-	def login(self, name=None, password=None):
+	def login(self, name=None, password=None, **kwargs):
 		form = self._getLoginForm(name, password)
 		if request.method.lower() == "get" or not form.isFormValid():
 			return dict(form=form)
@@ -32,12 +32,12 @@ class UserController(AbstractController):
 		redirect()
 
 	@expose()
-	def logout(self):
+	def logout(self, **kwargs):
 		session.delete()
 		redirect()
 
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
-	def create(self, name=None, password=None):
+	def create(self, name=None, password=None, **kwargs):
 		result = super(UserController, self).create(name=name,
 													password=password)
 		if "form" in result.keys():
@@ -47,7 +47,7 @@ class UserController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
 	@authenticated
-	def edit(self, name=None, password=None):
+	def edit(self, name=None, password=None, **kwargs):
 		result = super(UserController, self).edit(name=name,
 												  password=password)
 		if "form" in result.keys():
@@ -57,7 +57,7 @@ class UserController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
 	@authenticated
-	def delete(self):
+	def delete(self, **kwargs):
 		result = super(UserController, self).delete()
 		if "form" in result.keys():
 			return result

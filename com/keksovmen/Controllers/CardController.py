@@ -24,7 +24,8 @@ class CardController(AbstractController):
 	def create(self, dir_id: int = 0,
 			   title=None,
 			   description=None,
-			   message=None):
+			   message=None,
+			   **kwargs):
 		result = super(CardController, self) \
 			.create(dir_id=dir_id,
 					title=title,
@@ -38,7 +39,7 @@ class CardController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	@authenticated
-	def edit(self, card_id, title=None, description=None, message=None):
+	def edit(self, card_id, title=None, description=None, message=None, **kwargs):
 		result = super(CardController, self) \
 			.edit(card_id=card_id,
 				  title=title,
@@ -53,7 +54,7 @@ class CardController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	@authenticated
-	def delete(self, card_id: int):
+	def delete(self, card_id: int, **kwargs):
 		result = super(CardController, self) \
 			.delete(card_id=card_id,
 					user_id=session.get('u_id', None))

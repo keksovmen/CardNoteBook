@@ -17,15 +17,15 @@ class DirectoryController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/directoryView.xhtml")
 	@authenticated
-	def view(self, dir_id: int = 0):
+	def view(self, dir_id: int = 0, page: int = 0, step: int = 3):
 		current_dir = ModelInit.session.query(Directory) \
 			.filter(Directory.creator == session.get('u_id', None)) \
 			.filter(Directory.dir_id == dir_id).first()
-		return dict(current_dir=current_dir)
+		return dict(current_dir=current_dir, page=page, step=step)
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	@authenticated
-	def create(self, parent_id: int, title=None, description=None):
+	def create(self, parent_id: int, title=None, description=None, **kwargs):
 		result = super(DirectoryController, self).create(
 			parent_id=int(parent_id),
 			title=title,
@@ -39,7 +39,7 @@ class DirectoryController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	@authenticated
-	def edit(self, dir_id: int, title=None, description=None):
+	def edit(self, dir_id: int, title=None, description=None, **kwargs):
 		result = super(DirectoryController, self).edit(
 			dir_id=dir_id,
 			title=title,
@@ -54,7 +54,7 @@ class DirectoryController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	@authenticated
-	def delete(self, dir_id: int):
+	def delete(self, dir_id: int, **kwargs):
 		result = super(DirectoryController, self) \
 			.delete(dir_id=dir_id, user_id=session.get('u_id', None))
 		if "form" in result.keys():
