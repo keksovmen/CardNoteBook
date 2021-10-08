@@ -2,6 +2,7 @@ from tg import session, redirect
 from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
+from com.keksovmen.Decorators.Authenticator import authenticated
 from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
 from com.keksovmen.Model.Directory import *
 from com.keksovmen.Model.User import User
@@ -11,13 +12,15 @@ from com.keksovmen.Util import Form, FormField
 class CardController(AbstractController):
 	@expose()
 	def index(self):
-		pass
+		redirect()
 
 	@expose("com/keksovmen/Controllers/xhtml/card/cardView.xhtml")
+	@authenticated
 	def view(self, card_id):
 		return dict(card=Card.getCard(card_id, session.get('u_id', None)))
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
+	@authenticated
 	def create(self, dir_id: int = 0,
 			   title=None,
 			   description=None,
@@ -34,6 +37,7 @@ class CardController(AbstractController):
 		redirect("/dir/view?dir_id={}".format(dir_id))
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
+	@authenticated
 	def edit(self, card_id, title=None, description=None, message=None):
 		result = super(CardController, self) \
 			.edit(card_id=card_id,
@@ -48,6 +52,7 @@ class CardController(AbstractController):
 		redirect("/dir/view?dir_id={}".format(card.dir_id))
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
+	@authenticated
 	def delete(self, card_id: int):
 		result = super(CardController, self) \
 			.delete(card_id=card_id,
@@ -71,7 +76,8 @@ class CardController(AbstractController):
 		form.setValues(**kwargs)
 		return form
 
-	def _getCreateForm(self, dir_id, title, description, message, user_id) -> Form:
+	def _getCreateForm(self, dir_id, title, description, message,
+					   user_id) -> Form:
 		form = self._getDefaultForm(dir_id=dir_id,
 									title=title,
 									description=description,
@@ -113,7 +119,8 @@ class CardController(AbstractController):
 									button="Delete",
 									action="delete")
 
-	def _createModelObject(self, title, description, message, dir_id, user_id) -> Card:
+	def _createModelObject(self, title, description, message, dir_id,
+						   user_id) -> Card:
 		return Card(title=title,
 					description=description,
 					message=message,

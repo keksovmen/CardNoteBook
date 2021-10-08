@@ -7,6 +7,7 @@ from com.keksovmen.Model.Directory import Directory
 from com.keksovmen.Model.ModelInit import *
 from com.keksovmen.Model.User import User
 from com.keksovmen.Util import *
+from com.keksovmen.Decorators.Authenticator import authenticated
 
 
 class UserController(AbstractController):
@@ -16,6 +17,7 @@ class UserController(AbstractController):
 		redirect()
 
 	@expose("com/keksovmen/Controllers/xhtml/user/userView.xhtml")
+	@authenticated
 	def view(self):
 		me = User.getMe(session.get('u_id', None))
 		return dict(user=me)
@@ -44,6 +46,7 @@ class UserController(AbstractController):
 		redirect()
 
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
+	@authenticated
 	def edit(self, name=None, password=None):
 		result = super(UserController, self).edit(name=name,
 												  password=password)
@@ -53,6 +56,7 @@ class UserController(AbstractController):
 		redirect()
 
 	@expose("com/keksovmen/Controllers/xhtml/user/user.xhtml")
+	@authenticated
 	def delete(self):
 		result = super(UserController, self).delete()
 		if "form" in result.keys():

@@ -18,7 +18,7 @@ class RootController(TGController):
 
 	@expose()
 	def index(self):
-		redirect("/dir/")
+		redirect("/dir/view")
 
 
 

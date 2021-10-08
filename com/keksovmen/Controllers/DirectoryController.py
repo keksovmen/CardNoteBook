@@ -2,6 +2,7 @@ from tg import session, redirect
 from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
+from com.keksovmen.Decorators.Authenticator import authenticated
 from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
 from com.keksovmen.Model.Directory import *
 from com.keksovmen.Model.User import User
@@ -15,6 +16,7 @@ class DirectoryController(AbstractController):
 		redirect("/dir/view")
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/directoryView.xhtml")
+	@authenticated
 	def view(self, dir_id: int = 0):
 		current_dir = ModelInit.session.query(Directory) \
 			.filter(Directory.creator == session.get('u_id', None)) \
@@ -22,6 +24,7 @@ class DirectoryController(AbstractController):
 		return dict(current_dir=current_dir)
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
+	@authenticated
 	def create(self, parent_id: int, title=None, description=None):
 		result = super(DirectoryController, self).create(
 			parent_id=int(parent_id),
@@ -35,6 +38,7 @@ class DirectoryController(AbstractController):
 		redirect("view?dir_id={}".format(currDir.dir_id))
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
+	@authenticated
 	def edit(self, dir_id: int, title=None, description=None):
 		result = super(DirectoryController, self).edit(
 			dir_id=dir_id,
@@ -49,6 +53,7 @@ class DirectoryController(AbstractController):
 			currDir.parent.dir_id if currDir.parent else 0))
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
+	@authenticated
 	def delete(self, dir_id: int):
 		result = super(DirectoryController, self) \
 			.delete(dir_id=dir_id, user_id=session.get('u_id', None))

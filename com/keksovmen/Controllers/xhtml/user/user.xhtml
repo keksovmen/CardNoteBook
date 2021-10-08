@@ -5,7 +5,7 @@
 </head>
 <body>
 <div class="table_holder">
-    <div class="user_buttons_holder">
+    <div class="user_buttons_holder" py:if="form.action.getValue() != 'login'">
         <a class="button_ref" href="/user/view">
             <div class="button">Back</div>
         </a>
@@ -15,7 +15,7 @@
             <div class="error_user_grid" py:if="form.name.getError()">
                 <span class="error" py:content="form.name.getError()"/>
             </div>
-            <div class="user_input_label"><label for="name">Name:</label></div>
+            <div class="user_input_label"><label for="name">Login:</label></div>
             <div class="user_input_field"><input type="text" name="name" id="name" value="${form.name.getValue()}"/></div>
             <div class="error_user_grid" py:if="form.password.getError()">
                 <span class="error" py:content="form.password.getError()"/>

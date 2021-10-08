@@ -71,3 +71,9 @@ class User(ModelInit.DeclarativeBase):
 	def getMe(user_id):
 		return ModelInit.session.query(User).filter(
 			User.u_id == user_id).first()
+
+	@staticmethod
+	def isAuthenticated(user_id):
+		if not user_id:
+			return False
+		return True
