@@ -6,25 +6,8 @@
     background-color: khaki;
 }
 
-.dir_holder input,
-.dir_holder textarea{
-    width: 100%;
-    border: none;
-    padding: 5px 0px;
-    margin-bottom: 16px;
-    resize: none;
-    font-size: inherit;
-    font-family: inherit;
-}
 
-.dir_holder input[type=submit]:hover{
-    background-color: lightgray;
-}
-
-.dir_holder input.form_send{
-    margin: 0px !important;
-}
-
-.dir_title, .dir_title input{
+.dir_title,
+.dir_title input{
     text-align: center;
 }
