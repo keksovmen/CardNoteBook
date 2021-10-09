@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody py:if="current_dir">
-        <py:for each="dir in current_dir.children">
+        <py:for each="dir in current_dir.children[paginator.page*paginator.step:(paginator.page + 1) * paginator.step]">
             <tr class="dir_row">
                 <td class="double_icon" colspan="2"><img src="/dir.png"/></td>
                 <td class="body_cell">
@@ -67,7 +67,7 @@
                 </tr>
             </py:for>
         </py:for>
-        <py:for each="card in current_dir.cards">
+        <py:for each="card in current_dir.cards[paginator.page*paginator.step:(paginator.page+1)*paginator.step]">
             <tr class="card_row">
                 <td class="double_icon" colspan="2"><img src="/card.png"/></td>
                 <td class="body_cell" colspan="3">
@@ -81,6 +81,18 @@
         </py:for>
         </tbody>
     </table>
+    <div class="paginator_holder">
+        <py:for each="index in paginator.getIndexes()">
+            <a class="button_ref" href="view?dir_id=${current_dir.dir_id}&amp;page=${index}&amp;step=${paginator.step}">
+                <py:if test="index == paginator.page">
+                    <div class="current_paginator">${index + 1}</div>
+                </py:if>
+                <py:if test="index != paginator.page">
+                    <div class="paginator_button">${index + 1}</div>
+                </py:if>
+            </a>
+        </py:for>
+    </div>
 </div>
 </body>
 </html>

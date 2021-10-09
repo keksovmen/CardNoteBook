@@ -3,7 +3,8 @@ from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
 from com.keksovmen.Decorators.Authenticator import authenticated
-from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
+from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
+	PaginatorHandler
 from com.keksovmen.Model.Directory import *
 from com.keksovmen.Model.User import User
 from com.keksovmen.Util import Form, FormField
@@ -21,7 +22,12 @@ class DirectoryController(AbstractController):
 		current_dir = ModelInit.session.query(Directory) \
 			.filter(Directory.creator == session.get('u_id', None)) \
 			.filter(Directory.dir_id == dir_id).first()
-		return dict(current_dir=current_dir, page=page, step=step)
+		paginator = PaginatorHandler(max(len(current_dir.children),
+										 len(current_dir.cards)),
+									 int(page),
+									 int(step),
+									 10)
+		return dict(current_dir=current_dir, paginator=paginator)
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	@authenticated
