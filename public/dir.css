@@ -11,3 +11,8 @@
 .dir_title input{
     text-align: center;
 }
+
+.dir_title,
+.dir_description{
+    margin-bottom: 16px;
+}

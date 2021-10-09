@@ -16,14 +16,23 @@
     </div>
     <span py:replace="h.createBackNavigation(card.parent_dir, True)"/>
     <div class="card_holder">
-        <div class="card_title_holder">
-            <strong>${card.title}</strong>
+        <div class="card_title">
+            <strong>Title:</strong><br/>
+            <div class="card_title_view">
+                <strong>${card.title}</strong>
+            </div>
         </div>
-        <div class="card_description_holder">
-            ${card.description}
+        <div class="card_description">
+            Description:<br/>
+            <div class="card_description_view">
+                ${card.description}
+            </div>
         </div>
-        <div class="card_message_holder">
-            ${card.message}
+        <div class="card_message" style="margin-bottom: 0px !important;">
+            Message:<br/>
+            <div class="card_message_view">
+                ${card.message}
+            </div>
         </div>
     </div>
 </div>

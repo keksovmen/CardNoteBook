@@ -12,29 +12,35 @@
             <input type="hidden" name="card_id" id="card_id" value="${form.card_id.getValue()}"/>
             <input type="hidden" name="dir_id" id="dir_id" value="${form.dir_id.getValue()}"/>
             <py:if test="form.action.getValue() != 'delete'">
-                <label for="title">Title:
-                    <span py:content="form.title.getError()" class="error"/>
-                </label>
-                <br/>
-                <div class="user_input_field">
-                    <input class="card_title_input" type="text" name="title" id="title"
-                           value="${form.title.getValue()}"/>
+                <div class="card_title">
+                    <label for="title">Title:
+                        <span py:content="form.title.getError()" class="error"/>
+                    </label>
+                    <br/>
+                    <div class="user_input_field">
+                        <input type="text" name="title" id="title"
+                               value="${form.title.getValue()}"/>
+                    </div>
                 </div>
-                <label for="description">Description:
-                    <span py:content="form.description.getError()" class="error"/>
-                </label>
-                <br/>
-                <div class="user_input_field">
-                    <input type="text" name="description" id="description"
-                           value="${form.description.getValue()}"/>
+                <div class="card_description">
+                    <label for="description">Description:
+                        <span py:content="form.description.getError()" class="error"/>
+                    </label>
+                    <br/>
+                    <div class="user_input_field">
+                        <input type="text" name="description" id="description"
+                               value="${form.description.getValue()}"/>
+                    </div>
                 </div>
-                <label for="message">Card text:
-                    <span py:content="form.message.getError()" class="error"/>
-                </label>
-                <br/>
-                <div class="user_input_field">
-                <textarea cols="50" rows="10" name="message" id="message"
-                          py:content="form.message.getValue()"/>
+                <div class="card_message">
+                    <label for="message">Card text:
+                        <span py:content="form.message.getError()" class="error"/>
+                    </label>
+                    <br/>
+                    <div class="user_input_field">
+                        <textarea cols="50" rows="10" name="message" id="message"
+                                  py:content="form.message.getValue()"/>
+                    </div>
                 </div>
             </py:if>
             <py:if test="form.action.getValue() == 'delete'">
