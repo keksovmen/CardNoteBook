@@ -6,6 +6,14 @@
 <body>
 <div class="table_holder">
     <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
+    <div class="action_panel">
+        <a class="button_ref" href="/card/edit?card_id=${card.card_id}">
+            <div class="button"><span class="edit_text">Edit</span></div>
+        </a>
+        <a class="button_ref" href="/card/delete?card_id=${card.card_id}">
+            <div class="button"><span class="delete_text">Delete</span></div>
+        </a>
+    </div>
     <span py:replace="h.createBackNavigation(card.parent_dir, True)"/>
 </div>
 <div class="card_holder">
