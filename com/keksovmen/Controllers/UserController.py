@@ -12,9 +12,9 @@ from com.keksovmen.Decorators.Authenticator import authenticated
 
 class UserController(AbstractController):
 
-	@expose()
+	@expose("com/keksovmen/Controllers/xhtml/user/userGuide.xhtml")
 	def index(self):
-		redirect()
+		return dict()
 
 	@expose("com/keksovmen/Controllers/xhtml/user/userView.xhtml")
 	@authenticated

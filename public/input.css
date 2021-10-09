@@ -24,3 +24,7 @@ input[type=submit]:hover{
 .delete_phrase p{
     margin-top: 8px;
 }
+
+.user_input_field{
+    display: flex;
+}

@@ -2,25 +2,23 @@
 <head>
 </head>
 <body>
-<div>
-    <py:if test="session.get('u_name', None)">
-        <div class="user_guide_holder">
-            <a class="button_ref" href="/user/view">
-                <div class="button">Hi - ${session.get('u_name', None)}!</div>
-            </a>
-        </div>
-    </py:if>
-    <py:if test="not session.get('u_name', None)">
-        <div class="user_guide_holder">
-            <a class="button_ref" href="/user/login">
-                <div class="button">Login</div>
-            </a>
-            <a class="button_ref" href="/user/create">
-                <div class="button">Register</div>
-            </a>
-        </div>
-        <div style="margin-bottom: 16px"></div>
-    </py:if>
-</div>
+<py:if test="session.get('u_name', None)">
+    <div class="user_guide_holder">
+        <a class="button_ref" href="/user/view">
+            <div class="button">Hi - ${session.get('u_name', None)}!</div>
+        </a>
+    </div>
+</py:if>
+<py:if test="not session.get('u_name', None)">
+    <div class="user_guide_holder">
+        <a class="button_ref" href="/user/login">
+            <div class="button">Login</div>
+        </a>
+        <a class="button_ref" href="/user/create">
+            <div class="button">Register</div>
+        </a>
+    </div>
+    <div style="margin-bottom: 16px"></div>
+</py:if>
 </body>
 </html>
