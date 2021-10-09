@@ -7,26 +7,44 @@
 <div class="table_holder">
     <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
     <span py:replace="h.createBackNavigationFromId(form.dir_id.getValue(), session.get('u_id', None), True)"/>
-</div>
-<div class="card_holder">
-    <form action="${form.action.getValue()}" method="post">
-        <input type="hidden" name="card_id" id="card_id" value="${form.card_id.getValue()}"/>
-        <py:if test="form.action.getValue() != 'delete'">
+    <div class="card_holder">
+        <form action="${form.action.getValue()}" method="post">
+            <input type="hidden" name="card_id" id="card_id" value="${form.card_id.getValue()}"/>
             <input type="hidden" name="dir_id" id="dir_id" value="${form.dir_id.getValue()}"/>
-            <label for="title">Title:
-                <span py:if="form.title.getError()" style="color: red">${form.title.getError()}</span>
-            </label><br/>
-            <div class="user_input_field"><input type="text" name="title" id="title" value="${form.title.getValue()}"/></div>
-            <label for="description">Description:</label><br/>
-            <div class="user_input_field"><input type="text" name="description" id="description" value="${form.description.getValue()}"/></div>
-            <label for="message">Card text:</label><br/>
-            <div class="user_input_field"><textarea cols="50" rows="10" name="message" id="message" py:content="form.message.getValue()"/></div>
-        </py:if>
-        <py:if test="form.action.getValue() == 'delete'">
-            <p>Are you sure you want to delete <b>${form.title.getValue()}</b> card</p>
-        </py:if>
-        <input class="form_send" type="submit" value="${form.button.getValue()}"/>
-    </form>
+            <py:if test="form.action.getValue() != 'delete'">
+                <label for="title">Title:
+                    <span py:content="form.title.getError()" class="error"/>
+                </label>
+                <br/>
+                <div class="user_input_field">
+                    <input class="card_title_input" type="text" name="title" id="title"
+                           value="${form.title.getValue()}"/>
+                </div>
+                <label for="description">Description:
+                    <span py:content="form.description.getError()" class="error"/>
+                </label>
+                <br/>
+                <div class="user_input_field">
+                    <input type="text" name="description" id="description"
+                           value="${form.description.getValue()}"/>
+                </div>
+                <label for="message">Card text:
+                    <span py:content="form.message.getError()" class="error"/>
+                </label>
+                <br/>
+                <div class="user_input_field">
+                <textarea cols="50" rows="10" name="message" id="message"
+                          py:content="form.message.getValue()"/>
+                </div>
+            </py:if>
+            <py:if test="form.action.getValue() == 'delete'">
+                <div class="delete_phrase">
+                    <p>Are you sure you want to delete <b>${form.title.getValue()}</b> card</p>
+                </div>
+            </py:if>
+            <input type="submit" value="${form.button.getValue()}"/>
+        </form>
+    </div>
 </div>
 </body>
 </html>
