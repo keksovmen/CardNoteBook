@@ -16,11 +16,11 @@
             <label for="title">Title:
                 <span py:if="form.title.getError()" style="color: red">${form.title.getError()}</span>
             </label><br/>
-            <input type="text" name="title" id="title" value="${form.title.getValue()}"/><br/>
+            <div class="user_input_field"><input type="text" name="title" id="title" value="${form.title.getValue()}"/></div>
             <label for="description">Description:</label><br/>
-            <input type="text" name="description" id="description" value="${form.description.getValue()}"/><br/>
+            <div class="user_input_field"><input type="text" name="description" id="description" value="${form.description.getValue()}"/></div>
             <label for="message">Card text:</label><br/>
-            <textarea cols="50" rows="10" name="message" id="message" py:content="form.message.getValue()"/><br/>
+            <div class="user_input_field"><textarea cols="50" rows="10" name="message" id="message" py:content="form.message.getValue()"/></div>
         </py:if>
         <py:if test="form.action.getValue() == 'delete'">
             <p>Are you sure you want to delete <b>${form.title.getValue()}</b> card</p>
