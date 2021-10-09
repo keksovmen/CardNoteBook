@@ -46,10 +46,10 @@ class PaginatorHandler:
 								 self.page + self._possibleRight + 1)]
 
 	def hasBeginningPage(self):
-		return self.page != 0
+		return self._getLeftPages() > self._possibleLeft
 
 	def hasEndPage(self):
-		return self._getSourceLengthInPages() != self.page + 1
+		return self._getRightPages() > self._possibleRight
 
 	def getBeginningIndex(self):
 		return 0
