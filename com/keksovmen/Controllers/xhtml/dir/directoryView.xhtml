@@ -82,25 +82,27 @@
         </tbody>
     </table>
     <div class="paginator_holder">
-        <py:def function="createPaginatorButton(page, description, button_class)">
+        <py:def function="createPaginatorButton(page, description)">
             <a class="button_ref"
                href="view?dir_id=${current_dir.dir_id}&amp;page=${page}&amp;step=${paginator.step}">
-                <div class="${button_class}">${description}</div>
+                <div class="paginator_button">${description}</div>
             </a>
         </py:def>
         <py:if test="paginator.hasBeginningPage()">
-            ${createPaginatorButton(paginator.getBeginningIndex(), 'Beginning', 'paginator_button')}
+            ${createPaginatorButton(paginator.getBeginningIndex(), 'Beginning')}
         </py:if>
         <py:for each="index in paginator.getIndexes()">
             <py:if test="index == paginator.page">
-                ${createPaginatorButton(index, index + 1, 'current_paginator')}
+                <div class="current_paginator">
+                    ${createPaginatorButton(index, index + 1)}
+                </div>
             </py:if>
             <py:if test="index != paginator.page">
-                ${createPaginatorButton(index, index + 1, 'paginator_button')}
+                ${createPaginatorButton(index, index + 1)}
             </py:if>
         </py:for>
         <py:if test="paginator.hasEndPage()">
-            ${createPaginatorButton(paginator.getEndIndex(), 'End', 'paginator_button')}
+            ${createPaginatorButton(paginator.getEndIndex(), 'End')}
         </py:if>
     </div>
 </div>
