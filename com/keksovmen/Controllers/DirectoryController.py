@@ -3,10 +3,11 @@ from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
 from com.keksovmen.Decorators.Authenticator import authenticated
-from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
+from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
+	isAcceptableLength, wrongLengthMessage
 from com.keksovmen.Helpers.Paginator import PaginatorHandler
-
-from com.keksovmen.Model.Directory import *
+from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE
+from com.keksovmen.Model.Directory import Directory
 from com.keksovmen.Model.User import User
 from com.keksovmen.Util import Form, FormField
 
@@ -20,9 +21,7 @@ class DirectoryController(AbstractController):
 	@expose("com/keksovmen/Controllers/xhtml/dir/directoryView.xhtml")
 	@authenticated
 	def view(self, dir_id: int = 0, page: int = 0, step: int = 3):
-		current_dir = ModelInit.session.query(Directory) \
-			.filter(Directory.creator == session.get('u_id', None)) \
-			.filter(Directory.dir_id == dir_id).first()
+		current_dir = Directory.getDirectory(dir_id, session.get('u_id', None))
 		paginator = PaginatorHandler(max(len(current_dir.children),
 										 len(current_dir.cards)),
 									 int(page),
@@ -73,8 +72,13 @@ class DirectoryController(AbstractController):
 		form = Form()
 		form.addField(
 			FormField("title").addCheckCondition(
-				checkNotZeroLength, zeroLengthMessage("Title")))
-		form.addField(FormField("description"))
+				checkNotZeroLength, zeroLengthMessage("Title"))
+				.addCheckCondition(
+				isAcceptableLength(TITLE_SIZE),
+				wrongLengthMessage(TITLE_SIZE)))
+		form.addField(FormField("description").addCheckCondition(
+			isAcceptableLength(DESCRIPTION_SIZE),
+			wrongLengthMessage(DESCRIPTION_SIZE)))
 		form.addField(FormField("dir_id"))
 		form.addField(FormField("parent_id"))
 		form.addField(FormField("pageTitle"))

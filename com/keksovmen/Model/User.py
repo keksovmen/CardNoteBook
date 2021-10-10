@@ -9,6 +9,8 @@ from com.keksovmen.Model.Constants import USER_NAME_SIZE, USER_PASSWORD_SIZE
 from com.keksovmen.Model.Directory import Directory
 from com.keksovmen.Model.ModelInit import ModelInit
 
+__all__ = ["User"]
+
 
 class User(ModelInit.DeclarativeBase):
 	__tablename__ = "users"

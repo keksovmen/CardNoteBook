@@ -1,8 +1,19 @@
-import webhelpers2
-from webhelpers2.html.builder import HTMLBuilder
-from com.keksovmen.Model.Directory import Directory
 from functools import reduce
 from html import unescape
+
+import webhelpers2
+from webhelpers2.html.builder import HTMLBuilder
+
+from com.keksovmen.Model.Directory import Directory
+
+__all__ = ["createBackNavigation",
+		   "createBackNavigationFromId",
+		   "checkNotZeroLength",
+		   "zeroLengthMessage",
+		   "prettyTime",
+		   "isAcceptableLength",
+		   "wrongLengthMessage",
+		   "webhelpers2"]
 
 
 def createBackNavigation(dir: Directory, isCardView: bool = False) -> str:
@@ -41,6 +52,17 @@ def zeroLengthMessage(fieldName: str) -> str:
 
 def prettyTime(datetime):
 	return datetime.strftime("%d.%m.%Y %H:%M")
+
+
+def isAcceptableLength(max_size: int):
+	def wrapper(value: str) -> bool:
+		return len(value) <= max_size
+
+	return wrapper
+
+
+def wrongLengthMessage(max_size: int) -> str:
+	return f"Field length must be less or equal to {max_size} symbols"
 
 
 def __getHrefTag(dir: Directory) -> webhelpers2.html.literal:

@@ -3,8 +3,11 @@ from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
 from com.keksovmen.Decorators.Authenticator import authenticated
-from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
-from com.keksovmen.Model.Directory import *
+from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
+	isAcceptableLength, wrongLengthMessage
+from com.keksovmen.Model.Card import Card
+from com.keksovmen.Model.Constants import TEXT_SIZE, TITLE_SIZE, \
+	DESCRIPTION_SIZE
 from com.keksovmen.Model.User import User
 from com.keksovmen.Util import Form, FormField
 
@@ -39,7 +42,8 @@ class CardController(AbstractController):
 
 	@expose("com/keksovmen/Controllers/xhtml/card/card.xhtml")
 	@authenticated
-	def edit(self, card_id, title=None, description=None, message=None, **kwargs):
+	def edit(self, card_id, title=None, description=None, message=None,
+			 **kwargs):
 		result = super(CardController, self) \
 			.edit(card_id=card_id,
 				  title=title,
@@ -66,10 +70,17 @@ class CardController(AbstractController):
 		form = Form()
 		form.addField(
 			FormField("title").addCheckCondition(
-				checkNotZeroLength, zeroLengthMessage("Title")))
+				checkNotZeroLength, zeroLengthMessage("Title"))
+				.addCheckCondition(
+				isAcceptableLength(TITLE_SIZE),
+				wrongLengthMessage(TITLE_SIZE)))
 		form.addField(FormField("card_id"))
-		form.addField(FormField("description"))
-		form.addField(FormField("message"))
+		form.addField(FormField("description").addCheckCondition(
+			isAcceptableLength(DESCRIPTION_SIZE),
+			wrongLengthMessage(DESCRIPTION_SIZE)))
+		form.addField(FormField("message").addCheckCondition(
+			isAcceptableLength(TEXT_SIZE),
+			wrongLengthMessage(TEXT_SIZE)))
 		form.addField(FormField("pageTitle"))
 		form.addField(FormField("button"))
 		form.addField(FormField("action"))

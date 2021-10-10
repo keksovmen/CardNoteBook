@@ -2,12 +2,14 @@ from tg import session, redirect, request
 from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
-from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage
+from com.keksovmen.Decorators.Authenticator import authenticated
+from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
+	isAcceptableLength, wrongLengthMessage
+from com.keksovmen.Model.Constants import USER_NAME_SIZE, USER_PASSWORD_SIZE
 from com.keksovmen.Model.Directory import Directory
-from com.keksovmen.Model.ModelInit import *
+from com.keksovmen.Model.ModelInit import ModelInit
 from com.keksovmen.Model.User import User
 from com.keksovmen.Util import *
-from com.keksovmen.Decorators.Authenticator import authenticated
 
 
 class UserController(AbstractController):
@@ -74,12 +76,15 @@ class UserController(AbstractController):
 		form.addField(
 			FormField("name").addCheckCondition(
 				checkNotZeroLength,
-				zeroLengthMessage("Name")))
+				zeroLengthMessage("Name")).addCheckCondition(
+				isAcceptableLength(USER_NAME_SIZE),
+				wrongLengthMessage(USER_NAME_SIZE)))
 		form.addField(
 			FormField("password").addCheckCondition(
 				checkNotZeroLength,
-				zeroLengthMessage("Password")))
-
+				zeroLengthMessage("Password")).addCheckCondition(
+				isAcceptableLength(USER_PASSWORD_SIZE),
+				wrongLengthMessage(USER_PASSWORD_SIZE)))
 		form.addField(FormField("pageTitle"))
 		form.addField(FormField("button"))
 		form.addField(FormField("action"))

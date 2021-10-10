@@ -12,6 +12,8 @@ from com.keksovmen.Model.Card import Card
 from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE
 from com.keksovmen.Model.ModelInit import ModelInit
 
+__all__ = ["Directory"]
+
 
 class Directory(ModelInit.DeclarativeBase):
 	__tablename__ = "directories"

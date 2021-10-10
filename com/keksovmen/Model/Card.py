@@ -8,6 +8,8 @@ from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE, \
 	TEXT_SIZE
 from com.keksovmen.Model.ModelInit import ModelInit
 
+__all__ = ["Card"]
+
 
 class Card(ModelInit.DeclarativeBase):
 	__tablename__ = "cards"
