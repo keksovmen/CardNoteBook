@@ -1,20 +1,21 @@
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 
 from com.keksovmen.Model.Card import Card
-from com.keksovmen.Model.ModelInit import ModelInit
+from com.keksovmen.Model.Constants import USER_NAME_SIZE, USER_PASSWORD_SIZE
 from com.keksovmen.Model.Directory import Directory
-
-from datetime import datetime
+from com.keksovmen.Model.ModelInit import ModelInit
 
 
 class User(ModelInit.DeclarativeBase):
 	__tablename__ = "users"
 
 	u_id = Column(type_=Integer, primary_key=True, autoincrement=True)
-	name = Column(type_=String(64), nullable=False, unique=True)
-	password = Column(type_=String(64), nullable=False)
+	name = Column(type_=String(USER_NAME_SIZE), nullable=False, unique=True)
+	password = Column(type_=String(USER_PASSWORD_SIZE), nullable=False)
 	reg_time = Column(type_=DateTime, nullable=False, default=datetime.now)
 	owned_dirs = Column(type_=Integer, default=0)
 	owned_cards = Column(type_=Integer, default=0)

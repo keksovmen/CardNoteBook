@@ -9,6 +9,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 
 from com.keksovmen.Model.Card import Card
+from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE
 from com.keksovmen.Model.ModelInit import ModelInit
 
 
@@ -16,8 +17,8 @@ class Directory(ModelInit.DeclarativeBase):
 	__tablename__ = "directories"
 
 	dir_id = Column(Integer, nullable=False)
-	title = Column(String(256), nullable=False)
-	description = Column(String(1024), nullable=True)
+	title = Column(String(TITLE_SIZE), nullable=False)
+	description = Column(String(DESCRIPTION_SIZE), nullable=True)
 	creator = Column(Integer, ForeignKey("users.u_id"), nullable=False)
 	creation_time = Column(DateTime, default=datetime.now)
 	modification_time = Column(DateTime,

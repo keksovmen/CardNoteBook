@@ -1,18 +1,21 @@
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
 	UniqueConstraint, PrimaryKeyConstraint, Text
-from sqlalchemy.orm import relationship, backref
-from com.keksovmen.Model.ModelInit import ModelInit
+from sqlalchemy.orm import relationship
 
-from datetime import datetime
+from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE, \
+	TEXT_SIZE
+from com.keksovmen.Model.ModelInit import ModelInit
 
 
 class Card(ModelInit.DeclarativeBase):
 	__tablename__ = "cards"
 
 	card_id = Column(Integer, nullable=False)
-	title = Column(String(256), nullable=False)
-	description = Column(String(1024), nullable=True)
-	message = Column(Text, nullable=True)
+	title = Column(String(TITLE_SIZE), nullable=False)
+	description = Column(String(DESCRIPTION_SIZE), nullable=True)
+	message = Column(Text(TEXT_SIZE), nullable=True)
 	creation_time = Column(DateTime, default=datetime.now)
 	modification_time = Column(DateTime, default=datetime.now,
 							   onupdate=datetime.now)
