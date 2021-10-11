@@ -1,11 +1,15 @@
 from datetime import datetime
+from hashlib import scrypt
+from os import urandom
+from typing import Tuple
 
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 
 from com.keksovmen.Model.Card import Card
-from com.keksovmen.Model.Constants import USER_NAME_SIZE, USER_PASSWORD_SIZE
+from com.keksovmen.Model.Constants import USER_NAME_SIZE, SALT_SIZE, \
+	HASHED_PASS_SIZE
 from com.keksovmen.Model.Directory import Directory
 from com.keksovmen.Model.ModelInit import ModelInit
 
@@ -17,7 +21,8 @@ class User(ModelInit.DeclarativeBase):
 
 	u_id = Column(type_=Integer, primary_key=True, autoincrement=True)
 	name = Column(type_=String(USER_NAME_SIZE), nullable=False, unique=True)
-	password = Column(type_=String(USER_PASSWORD_SIZE), nullable=False)
+	salt = Column(type_=String(SALT_SIZE), nullable=False, unique=True)
+	hash_pass = Column(type_=String(HASHED_PASS_SIZE), nullable=False)
 	reg_time = Column(type_=DateTime, nullable=False, default=datetime.now)
 	owned_dirs = Column(type_=Integer, default=0)
 	owned_cards = Column(type_=Integer, default=0)
@@ -80,3 +85,31 @@ class User(ModelInit.DeclarativeBase):
 		if not user_id:
 			return False
 		return True
+
+	@staticmethod
+	def isPasswordCorrect(name: str, password: str):
+		user = ModelInit.session.query(User) \
+			.filter(User.name == name).first()
+		return user.hash_pass == \
+			   User.generateSaltedHashPass(password, user.salt)
+
+	@staticmethod
+	def generateSalt() -> str:
+		salt = urandom(int(SALT_SIZE / 2)).hex()
+		while salt in ModelInit.session.query(User.salt).all():
+			salt = urandom(int(SALT_SIZE / 2)).hex()
+		return salt
+
+	@staticmethod
+	def generateSaltedHashPass(password: str, salt: str) -> str:
+		return scrypt(bytes(password, "utf-8"),
+					  salt=bytes(salt, "utf-8"),
+					  n=8,
+					  r=64,
+					  p=2,
+					  dklen=int(HASHED_PASS_SIZE / 2)).hex()
+
+	@staticmethod
+	def generateSaltPassPair(password: str) -> Tuple[str, str]:
+		salt = User.generateSalt()
+		return salt, User.generateSaltedHashPass(password, salt)

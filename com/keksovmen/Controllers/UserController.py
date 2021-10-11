@@ -99,9 +99,7 @@ class UserController(AbstractController):
 									button="Login",
 									action="login")
 		form.name.addCheckCondition(
-			lambda v: ModelInit.session.query(User) \
-						  .filter(User.name == v) \
-						  .filter(User.password == password).count() != 0,
+			lambda v: User.isPasswordCorrect(v, password),
 			"Wrong login or password")
 		return form
 
@@ -135,7 +133,8 @@ class UserController(AbstractController):
 		return form
 
 	def _createModelObject(self, name, password) -> User:
-		me = User(name=name, password=password)
+		secret = User.generateSaltPassPair(password)
+		me = User(name=name, salt=secret[0], hash_pass=secret[1])
 		me.dirs.append(Directory(title="root", dir_id=0, parent_id=None))
 		return me
 
