@@ -6,5 +6,6 @@ set arguments= -y ^
 --name %exeName% ^
 --paths env/Lib/site-packages ^
 --add-data com/keksovmen/Controllers/xhtml;com/keksovmen/Controllers/xhtml ^
---add-data public;public
+--add-data public;public ^
+--icon public/icon.ico
 call %pyinstallerPath% %mainRelativePath% %arguments%
