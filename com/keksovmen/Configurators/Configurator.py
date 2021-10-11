@@ -1,10 +1,11 @@
-import tg.configurator
-from tg.configurator.minimal import MinimalApplicationConfigurator
-from tg.configurator.components.statics import StaticsConfigurationComponent
+from tg import ApplicationConfigurator
 from tg.configurator.components.session import SessionConfigurationComponent
-from tg.configurator.components.sqlalchemy import SQLAlchemyConfigurationComponent
-from tg.configurator import ApplicationConfigurator
+from tg.configurator.components.sqlalchemy import \
+	SQLAlchemyConfigurationComponent
+from tg.configurator.components.statics import StaticsConfigurationComponent
+from tg.configurator.minimal import MinimalApplicationConfigurator
 from tg.util.bunch import Bunch
+
 from com.keksovmen.Helpers import Helpers
 
 

@@ -3,3 +3,6 @@ env
 database.db
 cache
 __pycache__/
+build
+*.spec
+dist
