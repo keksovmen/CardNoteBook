@@ -10,8 +10,14 @@
         <a class="button_ref" href="/card/edit?card_id=${card.card_id}">
             <div class="button"><span class="edit_text">Edit</span></div>
         </a>
+        <a class="button_ref" href="/card/move?card_id=${card.card_id}">
+            <div class="button"><span class="move_text">Move</span></div>
+        </a>
         <a class="button_ref" href="/card/delete?card_id=${card.card_id}">
             <div class="button"><span class="delete_text">Delete</span></div>
+        </a>
+        <a class="button_ref" href="/dir/view?dir_id=${card.dir_id}">
+            <div class="button"><span class="">Back</span></div>
         </a>
     </div>
     <span py:replace="h.createBackNavigation(card.parent_dir, True)"/>

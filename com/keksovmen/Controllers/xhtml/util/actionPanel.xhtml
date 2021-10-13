@@ -3,23 +3,33 @@
 </head>
 <body>
 <py:if test="current_dir">
-    <div class="action_panel_holder">
-        <div class="action_panel">
-            <a class="button_ref" href="/dir/create?parent_id=${current_dir.dir_id}">
-                <div class="dir_background">
-                    <div class="button">
-                        <span class="create_text">Add</span> directory
-                    </div>
+    <div class="action_panel">
+        <a class="button_ref" href="/dir/create?parent_id=${current_dir.dir_id}">
+            <div class="dir_background">
+                <div class="button">
+                    <span class="create_text">Add</span> directory
+                </div>
+            </div>
+        </a>
+        <a class="button_ref" href="/card/create?dir_id=${current_dir.dir_id}">
+            <div class="card_background">
+                <div class="button">
+                    <span class="create_text">Add</span> card
+                </div>
+            </div>
+        </a>
+        <py:if test="current_dir.parent">
+            <a class="button_ref" href="/dir/edit?dir_id=${current_dir.dir_id}">
+                <div class="button">
+                    <span class="edit_text">Edit</span> directory
                 </div>
             </a>
-            <a class="button_ref" href="/card/create?dir_id=${current_dir.dir_id}">
-                <div class="card_background">
-                    <div class="button">
-                        <span class="create_text">Add</span> card
-                    </div>
+            <a class="button_ref" href="/dir/move?dir_id=${current_dir.dir_id}">
+                <div class="button">
+                    <span class="move_text">Move</span> directory
                 </div>
             </a>
-        </div>
+        </py:if>
     </div>
 </py:if>
 </body>

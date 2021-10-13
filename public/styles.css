@@ -24,6 +24,10 @@ a:link, a:visited{
     color: red;
 }
 
+.move_text{
+    color: greenyellow;
+}
+
 .back_navigation{
     margin: 16px 32px;
 }
