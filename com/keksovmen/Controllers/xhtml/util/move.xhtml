@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>${form.pageTitle.getValue()}</title>
+    <py:include href="public/header.xhtml"/>
+</head>
+<body>
+<py:def function="createName(dir, postfix='')">
+    <py:for each="parent in reversed(dir.getParents())">
+        ${parent.title} \
+    </py:for>
+    ${dir.title}
+    <py:if test="postfix">
+        \ ${postfix}
+    </py:if>
+</py:def>
+<div class="table_holder">
+    <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
+    <div class="action_panel">
+        <a class="button_ref" href="${form.back_link.getValue()}">
+            <div class="button">
+                Back
+            </div>
+        </a>
+    </div>
+    <span py:replace="h.createBackNavigation(form.current_dir.getValue(), True)"/>
+    <div class="${form.view_style.getValue()}">
+        <div class="dir_description">
+            <span>
+            Moving <strong>${createName(form.current_dir.getValue(), form.postfix.getValue())}</strong>
+            to new parent directory
+            </span>
+        </div>
+        <form action="move" method="post">
+            <input type="hidden" name="${form.id_field.getValue()}" id="form.id_field.getValue()"
+                   value="${form.current_id.getValue()}"/>
+            <div class="dir_description">
+                <label for="parent_id">New parent folder:
+                    <span py:content="form.parent_id.getError()" class="error"/>
+                </label>
+                <br/>
+                <div class="user_input_field">
+                    <select name="parent_id" id="parent_id">
+                        <option value="${form.current_dir.getValue().parent_id}" style="display: none">
+                            ${createName(form.current_dir.getValue())}
+                        </option>
+                        <py:for each="dir in form.possible_parents.getValue()">
+                            <option value="${dir.dir_id}">
+                                ${createName(dir)}
+                            </option>
+                        </py:for>
+                    </select>
+                </div>
+            </div>
+            <input class="form_send" type="submit" value="Move"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

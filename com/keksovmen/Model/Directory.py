@@ -94,9 +94,36 @@ class Directory(ModelInit.DeclarativeBase):
 			par = par.parent
 		return parents
 
+	def getChildren(self) -> List[Directory]:
+		children = []
+		children.extend(self.children)
+		for c in self.children:
+			children.extend(c.getChildren())
+		return children
+
 	def updateModification(self):
 		self.modification_time = datetime.now()
 		if self.parent:
 			self.parent.updateModification()
 		else:
 			ModelInit.session.commit()
+
+	def getPossibleParents(self):
+		allDirs = ModelInit.session.query(Directory) \
+			.filter(Directory.creator == self.creator) \
+			.filter(Directory.dir_id != self.dir_id).all()
+		allDirs.remove(self.parent)
+		for c in self.getChildren():
+			allDirs.remove(c)
+		return allDirs
+
+	def move(self, new_parent_id):
+		self.parent_id = new_parent_id
+		ModelInit.session.commit()
+		self.updateModification()
+
+	def getId(self):
+		return self.dir_id
+
+	def getParentId(self):
+		return self.parent_id

@@ -1,7 +1,7 @@
 from tg import session, redirect
 from tg.decorators import expose
 
-from com.keksovmen.Controllers.AbstractController import AbstractController
+from com.keksovmen.Controllers.AbstractController import MovableController
 from com.keksovmen.Decorators.Authenticator import authenticated
 from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
 	isAcceptableLength, wrongLengthMessage
@@ -12,7 +12,7 @@ from com.keksovmen.Model.User import User
 from com.keksovmen.Util import Form, FormField
 
 
-class DirectoryController(AbstractController):
+class DirectoryController(MovableController):
 
 	@expose()
 	def index(self):
@@ -41,7 +41,7 @@ class DirectoryController(AbstractController):
 			return result
 		currDir = result["model"]
 		currDir.updateModification()
-		redirect("view?dir_id={}".format(currDir.dir_id))
+		redirect(f"view?dir_id={currDir.dir_id}")
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	@authenticated
@@ -55,8 +55,7 @@ class DirectoryController(AbstractController):
 			return result
 		currDir = result["model"]
 		currDir.updateModification()
-		redirect("view?dir_id={}".format(
-			currDir.parent.dir_id if currDir.parent else 0))
+		redirect(f"view?dir_id={currDir.parent_id}")
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/dir.xhtml")
 	@authenticated
@@ -67,6 +66,16 @@ class DirectoryController(AbstractController):
 			return result
 		currDir = result["model"]
 		redirect("view?dir_id={}".format(currDir.parent_id))
+
+	@expose("com/keksovmen/Controllers/xhtml/util/move.xhtml")
+	@authenticated
+	def move(self, dir_id: int, parent_id=-1, **kwargs):
+		result = super().move(parent_id,
+							  dir_id=dir_id,
+							  user_id=session.get('u_id', None))
+		if "form" in result.keys():
+			return result
+		redirect(f"view?dir_id={result['model'].parent_id}")
 
 	def _getDefaultForm(self, **kwargs):
 		form = Form()
@@ -141,3 +150,16 @@ class DirectoryController(AbstractController):
 	def _updateFieldsOnGetEdit(self, model: Directory, kwargs: dict):
 		kwargs['title'] = model.title
 		kwargs['description'] = model.description
+
+	def _updateMoveForm(self, form: Form, model: Directory, parent_id):
+		form.parent_id.addCheckCondition(
+			lambda v: Directory.isNameFree(
+				model.title,
+				parent_id,
+				model.creator),
+			"Such directory name already exists in selected parent dir")
+		form.current_dir.setValue(model)
+		form.postfix.setValue("")
+		form.pageTitle.setValue("Move Directory")
+		form.view_style.setValue("dir_holder")
+		form.id_field.setValue("dir_id")
