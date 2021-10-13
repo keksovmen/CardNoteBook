@@ -1,8 +1,8 @@
 from tg import session, redirect
 from tg.decorators import expose
 
-from com.keksovmen.Controllers.AbstractController import AbstractController
-from com.keksovmen.Decorators.Authenticator import authenticated
+from com.keksovmen.Controllers.AbstractController import MovableController
+from com.keksovmen.Decorators.Decorators import authenticated
 from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
 	isAcceptableLength, wrongLengthMessage
 from com.keksovmen.Model.Card import Card
@@ -12,7 +12,7 @@ from com.keksovmen.Model.User import User
 from com.keksovmen.Util import Form, FormField
 
 
-class CardController(AbstractController):
+class CardController(MovableController):
 	@expose()
 	def index(self):
 		redirect()
@@ -65,6 +65,16 @@ class CardController(AbstractController):
 		if "form" in result.keys():
 			return result
 		redirect("/dir/view?dir_id={}".format(result['model'].dir_id))
+
+	@expose("com/keksovmen/Controllers/xhtml/util/move.xhtml")
+	@authenticated
+	def move(self, card_id: int, parent_id=-1, **kwargs):
+		result = super().move(parent_id,
+							  card_id=card_id,
+							  user_id=session.get('u_id', None))
+		if "form" in result.keys():
+			return result
+		redirect(f"/dir/view?dir_id={result['model'].dir_id}")
 
 	def _getDefaultForm(self, **kwargs):
 		form = Form()
@@ -147,3 +157,16 @@ class CardController(AbstractController):
 		kwargs['title'] = model.title
 		kwargs['description'] = model.description
 		kwargs['message'] = model.message
+
+	def _updateMoveForm(self, form: Form, model: Card, parent_id):
+		form.parent_id.addCheckCondition(
+			lambda v: Card.isNameFree(
+				model.title,
+				parent_id,
+				model.creator),
+			"Such card name already exists in selected parent dir")
+		form.current_dir.setValue(model.parent_dir)
+		form.postfix.setValue(model.title)
+		form.pageTitle.setValue("Move Card")
+		form.view_style.setValue("card_holder")
+		form.id_field.setValue("card_id")

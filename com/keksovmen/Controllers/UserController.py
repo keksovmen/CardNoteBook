@@ -2,7 +2,7 @@ from tg import session, redirect, request
 from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import AbstractController
-from com.keksovmen.Decorators.Authenticator import authenticated
+from com.keksovmen.Decorators.Decorators import authenticated
 from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
 	isAcceptableLength, wrongLengthMessage
 from com.keksovmen.Model.Constants import USER_NAME_SIZE, USER_PASSWORD_SIZE

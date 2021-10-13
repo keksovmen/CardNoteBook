@@ -4,8 +4,10 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
 	UniqueConstraint, PrimaryKeyConstraint, Text
 from sqlalchemy.orm import relationship
 
+from com.keksovmen.Decorators.Decorators import asHeap
 from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE, \
 	TEXT_SIZE
+from com.keksovmen.Model.Directory import Directory
 from com.keksovmen.Model.ModelInit import ModelInit
 
 __all__ = ["Card"]
@@ -57,3 +59,20 @@ class Card(ModelInit.DeclarativeBase):
 			self.parent_dir.updateModification()
 		else:
 			ModelInit.session.commit()
+
+	@asHeap
+	def getPossibleParents(self):
+		return ModelInit.session.query(Directory) \
+			.filter(Directory.creator == self.creator) \
+			.filter(Directory.dir_id != self.dir_id).all()
+
+	def move(self, new_dir_id):
+		self.dir_id = new_dir_id
+		ModelInit.session.commit()
+		self.updateModification()
+
+	def getId(self):
+		return self.card_id
+
+	def getParentId(self):
+		return self.dir_id

@@ -8,7 +8,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 
-from com.keksovmen.Model.Card import Card
+from com.keksovmen.Decorators.Decorators import asHeap
 from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE
 from com.keksovmen.Model.ModelInit import ModelInit
 
@@ -49,7 +49,7 @@ class Directory(ModelInit.DeclarativeBase):
 						 primaryjoin="and_(Directory.dir_id==Card.dir_id, "
 									 "Directory.creator==Card.creator)",
 						 back_populates="parent_dir",
-						 order_by=desc(Card.modification_time),
+						 order_by="desc(Card.modification_time)",
 						 cascade="all, delete, delete-orphan")
 
 	@staticmethod
@@ -108,6 +108,7 @@ class Directory(ModelInit.DeclarativeBase):
 		else:
 			ModelInit.session.commit()
 
+	@asHeap
 	def getPossibleParents(self):
 		allDirs = ModelInit.session.query(Directory) \
 			.filter(Directory.creator == self.creator) \
@@ -127,3 +128,14 @@ class Directory(ModelInit.DeclarativeBase):
 
 	def getParentId(self):
 		return self.parent_id
+
+	def getDepth(self):
+		depth = 0
+		p = self.parent
+		while p:
+			depth += 1
+			p = p.parent
+		return depth
+
+	def __lt__(self, other):
+		return self.getDepth() < other.getDepth()

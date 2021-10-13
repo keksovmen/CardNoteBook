@@ -2,7 +2,7 @@ from tg import session, redirect
 from tg.decorators import expose
 
 from com.keksovmen.Controllers.AbstractController import MovableController
-from com.keksovmen.Decorators.Authenticator import authenticated
+from com.keksovmen.Decorators.Decorators import authenticated
 from com.keksovmen.Helpers.Helpers import checkNotZeroLength, zeroLengthMessage, \
 	isAcceptableLength, wrongLengthMessage
 from com.keksovmen.Helpers.Paginator import PaginatorHandler

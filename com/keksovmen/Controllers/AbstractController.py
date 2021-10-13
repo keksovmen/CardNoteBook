@@ -78,7 +78,8 @@ class MovableController(AbstractController):
 			parent_id = model.getParentId()
 		form = self.__getMoveForm(model,
 								  parent_id,
-								  model.getPossibleParents())
+								  model.getPossibleParents(),
+								  model.getParentId())
 		self._updateMoveForm(form, model, parent_id)
 		if self._isGetOrInvalid(form):
 			return dict(form=form)
@@ -88,9 +89,11 @@ class MovableController(AbstractController):
 	def _updateMoveForm(self, form: Form, model, parent_id):
 		pass
 
-	def __getMoveForm(self, model, parent_id, possible_parents):
+	def __getMoveForm(self, model, parent_id, possible_parents,
+					  current_parent_id):
 		form = Form()
 		form.addField(FormField("current_id", model.getId()))
+		form.addField(FormField("current_parent_id", current_parent_id))
 		form.addField(FormField("parent_id", parent_id)
 			.addCheckCondition(
 			lambda v: v != -1,

@@ -5,12 +5,9 @@ from typing import Tuple
 
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.expression import desc
 
-from com.keksovmen.Model.Card import Card
 from com.keksovmen.Model.Constants import USER_NAME_SIZE, SALT_SIZE, \
 	HASHED_PASS_SIZE
-from com.keksovmen.Model.Directory import Directory
 from com.keksovmen.Model.ModelInit import ModelInit
 
 __all__ = ["User"]
@@ -28,12 +25,12 @@ class User(ModelInit.DeclarativeBase):
 	owned_cards = Column(type_=Integer, default=0)
 
 	dirs = relationship("Directory",
-						order_by=desc(Directory.creation_time),
+						order_by="desc(Directory.creation_time)",
 						# back_populates="user",
 						cascade="all, delete, delete-orphan")
 
 	cards = relationship("Card",
-						 order_by=desc(Card.creation_time),
+						 order_by="desc(Card.creation_time)",
 						 cascade="all, delete, delete-orphan")
 
 	def isEditNameFree(self, name):
