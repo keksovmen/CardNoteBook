@@ -54,7 +54,7 @@
                     <span>${h.prettyTime(dir.creation_time)}</span>
                 </td>
             </tr>
-            <py:for each="card in dir.cards[:2]">
+            <py:for each="card in dir.cards[:app_globals.subCardPerDir]">
                 <tr class="card_row">
                     <td class="empty_icon"/>
                     <td class="single_icon"><img src="/card.png"/></td>

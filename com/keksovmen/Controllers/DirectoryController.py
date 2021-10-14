@@ -1,3 +1,4 @@
+import tg
 from tg import session, redirect
 from tg.decorators import expose
 
@@ -20,7 +21,9 @@ class DirectoryController(MovableController):
 
 	@expose("com/keksovmen/Controllers/xhtml/dir/directoryView.xhtml")
 	@authenticated
-	def view(self, dir_id: int = 0, page: int = 0, step: int = 3):
+	def view(self, dir_id: int = 0,
+			 page: int = 0,
+			 step: int = tg.app_globals.dirPerPage):
 		current_dir = Directory.getDirectory(dir_id, session.get('u_id', None))
 		paginator = PaginatorHandler(max(len(current_dir.children),
 										 len(current_dir.cards)),

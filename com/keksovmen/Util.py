@@ -1,6 +1,6 @@
 from typing import Callable, Dict, Final
 
-__all__ = ["Form", "FormField"]
+__all__ = ["Form", "FormField", "Globals"]
 
 
 class FormField:
@@ -69,3 +69,50 @@ class Form:
 
 	def __getitem__(self, item):
 		return self.fields[item]
+
+
+class Globals:
+	_mappings = {'-p': 'port',
+				 '-db': 'database',
+				 '-dpp': 'dirPerPage',
+				 '-scpd': 'subCardPerDir',
+				 '-sc': 'sessionCache'
+				 }
+
+	def __init__(self,
+				 port=8080,
+				 database="database.db",
+				 dirPerPage=4,
+				 subCardPerDir=2,
+				 sessionCache="cache/sessions/") -> None:
+		self.port = port
+		self.database = database
+		self.dirPerPage = dirPerPage
+		self.subCardPerDir = subCardPerDir
+		self.sessionCache = sessionCache
+
+	@staticmethod
+	def createFromCommandLine(arguments: list):
+		if not arguments:
+			return Globals()
+		pairs = dict(map(lambda t: (Globals._mappings[t[0]], t[1]),
+						 Globals._validateArguments(arguments).items()))
+		return Globals(**pairs)
+
+	@staticmethod
+	def functionCreateFromCommandLine(arguments: list):
+		def f():
+			return Globals.createFromCommandLine(arguments)
+
+		return f
+
+	@staticmethod
+	def _validateArguments(arguments: list) -> dict:
+		if len(arguments) % 2 != 0:
+			raise ValueError("Argument list must have even length"
+							 " containing -key value pairs")
+		pairs = dict(zip(arguments[0::2], arguments[1::2]))
+		for k in pairs.keys():
+			if k not in Globals._mappings:
+				raise IndexError(f"No such argument {k}")
+		return pairs

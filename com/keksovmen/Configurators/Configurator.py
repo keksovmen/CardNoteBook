@@ -7,13 +7,17 @@ from tg.configurator.minimal import MinimalApplicationConfigurator
 from tg.util.bunch import Bunch
 
 from com.keksovmen.Helpers import Helpers
+from com.keksovmen.Util import Globals
 
 
 class Configurator:
 	_config: ApplicationConfigurator
 
-	def __init__(self):
+	def __init__(self, arguments: list):
 		self._config = MinimalApplicationConfigurator()
+		self._config.update_blueprint({
+			"app_globals": Globals.functionCreateFromCommandLine(arguments)
+		})
 
 	def setRootController(self, controller):
 		self._config.update_blueprint({
