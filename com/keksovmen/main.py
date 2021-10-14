@@ -5,7 +5,12 @@ import tg
 from com.keksovmen.Util import Globals
 
 args = sys.argv[1:]
-g = Globals.createFromCommandLine(args)
+try:
+	g = Globals.createFromCommandLine(args)
+except:
+	print(Globals.allowedArguments())
+	raise
+
 # for underlying imports to initialise function default arguments
 tg.app_globals = g
 

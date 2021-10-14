@@ -116,3 +116,12 @@ class Globals:
 			if k not in Globals._mappings:
 				raise IndexError(f"No such argument {k}")
 		return pairs
+
+	@staticmethod
+	def allowedArguments():
+		return f"Allowed arguments:\n" \
+			   f"-p Port to bind on, > 0 < {2 ** 16 - 1}\n" \
+			   f"-db Database path, must end with valid file .db\n" \
+			   f"-dpp Amount of directories per page to display > 0\n" \
+			   f"-scpd Amount card to display in next directory > 0\n" \
+			   f"-sc Session cahce path"
