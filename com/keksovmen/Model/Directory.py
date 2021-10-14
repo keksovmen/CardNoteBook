@@ -8,7 +8,6 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, \
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 
-from com.keksovmen.Decorators.Decorators import asHeap
 from com.keksovmen.Model.Constants import TITLE_SIZE, DESCRIPTION_SIZE
 from com.keksovmen.Model.ModelInit import ModelInit
 
@@ -108,14 +107,15 @@ class Directory(ModelInit.DeclarativeBase):
 		else:
 			ModelInit.session.commit()
 
-	@asHeap
 	def getPossibleParents(self):
 		allDirs = ModelInit.session.query(Directory) \
 			.filter(Directory.creator == self.creator) \
-			.filter(Directory.dir_id != self.dir_id).all()
-		allDirs.remove(self.parent)
+			.filter(Directory.dir_id != self.dir_id) \
+			.filter(Directory.dir_id != self.parent_id) \
+			.all()
 		for c in self.getChildren():
 			allDirs.remove(c)
+		allDirs.sort()
 		return allDirs
 
 	def move(self, new_parent_id):
@@ -138,4 +138,9 @@ class Directory(ModelInit.DeclarativeBase):
 		return depth
 
 	def __lt__(self, other):
-		return self.getDepth() < other.getDepth()
+		# TODO: make getDepth() cache it's value, until modified
+		myDepth = self.getDepth()
+		otherDepth = other.getDepth()
+		if myDepth == otherDepth:
+			return self.title < other.title
+		return myDepth < otherDepth

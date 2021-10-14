@@ -43,12 +43,10 @@
                         <option value="${form.current_parent_id.getValue()}" style="display: none">
                             ${createName(form.current_dir.getValue())}
                         </option>
-                        <py:for each="i in range(len(form.possible_parents.getValue()))">
-                            <py:with vars="dir = h.heapq.heappop(form.possible_parents.getValue())">
-                                <option value="${dir.dir_id}">
-                                    ${createName(dir)}
-                                </option>
-                            </py:with>
+                        <py:for each="dir in form.possible_parents.getValue()">
+                            <option value="${dir.dir_id}">
+                                ${createName(dir)}
+                            </option>
                         </py:for>
                     </select>
                 </div>

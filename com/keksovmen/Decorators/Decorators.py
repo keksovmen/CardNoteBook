@@ -1,10 +1,8 @@
-import heapq
-
 from tg import redirect, session
 
 from com.keksovmen.Model.User import User
 
-__all__ = ["authenticated", "asHeap"]
+__all__ = ["authenticated"]
 
 
 def authenticated(func):
@@ -14,14 +12,3 @@ def authenticated(func):
 		redirect("/user/")
 
 	return aut
-
-
-def asHeap(func):
-	def h(*args, **kwargs):
-		initial = func(*args, **kwargs)
-		result = []
-		for i in initial:
-			heapq.heappush(result, i)
-		return result
-
-	return h

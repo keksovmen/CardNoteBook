@@ -1,4 +1,3 @@
-import heapq
 from functools import reduce
 from html import unescape
 
