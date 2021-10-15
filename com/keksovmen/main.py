@@ -15,10 +15,32 @@ except:
 tg.app_globals = g
 
 from wsgiref.simple_server import make_server
+from threading import Thread
 
 from com.keksovmen.Configurators.Configurator import Configurator
 from com.keksovmen.Controllers.RootController import RootController
 from com.keksovmen.Model.ModelInit import ModelInit
+
+
+def httpLoop():
+	global httpd
+	httpd.serve_forever(1)
+
+
+def inputLoop():
+	while True:
+		cmd = input()
+		if cmd == "quit":
+			global httpd
+			# you can just return from the loop,
+			# due to httpLoop is Deamon process will terminate
+			httpd.socket.close()
+			# won't work as expected, due to connection: keep-alive of http 2
+			# at lest in desktop opera, you will have to wait around a minute
+			# for the connection to die
+			# httpd.shutdown()
+			return
+
 
 configurator = Configurator(args)
 configurator.setRootController(RootController())
@@ -29,4 +51,6 @@ configurator.enableSessions(g.sessionCache)
 configurator.enableStatic("public/")
 application = configurator.getConfig().make_wsgi_app()
 httpd = make_server("localhost", g.port, application)
-httpd.serve_forever()
+
+Thread(target=httpLoop, daemon=True).start()
+Thread(target=inputLoop, daemon=False).start()
