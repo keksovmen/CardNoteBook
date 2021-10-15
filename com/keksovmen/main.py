@@ -1,4 +1,5 @@
 import sys
+import webbrowser
 
 import tg
 
@@ -30,7 +31,7 @@ def httpLoop():
 def inputLoop():
 	while True:
 		cmd = input()
-		if cmd == "quit":
+		if cmd == "q":
 			global httpd
 			# you can just return from the loop,
 			# due to httpLoop is Deamon process will terminate
@@ -40,6 +41,8 @@ def inputLoop():
 			# for the connection to die
 			# httpd.shutdown()
 			return
+		if cmd == "o":
+			webbrowser.open("http://localhost:8080")
 
 
 configurator = Configurator(args)
@@ -51,6 +54,10 @@ configurator.enableSessions(g.sessionCache)
 configurator.enableStatic("public/")
 application = configurator.getConfig().make_wsgi_app()
 httpd = make_server("localhost", g.port, application)
+
+print("Possible commands:\n",
+	  "\tq - for closing the app\n",
+	  "\to - for opening web bworser with app tab")
 
 Thread(target=httpLoop, daemon=True).start()
 Thread(target=inputLoop, daemon=False).start()
