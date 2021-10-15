@@ -40,7 +40,8 @@ def inputLoop():
 			# at lest in desktop opera, you will have to wait around a minute
 			# for the connection to die
 			# httpd.shutdown()
-			return
+			# ugly but works without calling windows error handler
+			sys.exit()
 		if cmd == "o":
 			webbrowser.open("http://localhost:8080")
 
