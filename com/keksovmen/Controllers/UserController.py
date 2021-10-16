@@ -143,4 +143,10 @@ class UserController(AbstractController):
 
 	def _updateFieldsOnGetEdit(self, model: User, kwargs: dict) -> None:
 		kwargs['name'] = model.name
-		kwargs['password'] = model.password
+
+	def _updateInstance(self, model, **kwargs):
+		secret = User.generateSaltPassPair(kwargs['password'])
+		super()._updateInstance(model,
+								name=kwargs['name'],
+								salt=secret[0],
+								hash_pass=secret[1])
