@@ -85,7 +85,7 @@ class Globals:
 				 dirPerPage=4,
 				 subCardPerDir=2,
 				 sessionCache="cache/sessions/") -> None:
-		self.port = port
+		self.port = int(port)
 		self.database = database
 		self.dirPerPage = dirPerPage
 		self.subCardPerDir = subCardPerDir
