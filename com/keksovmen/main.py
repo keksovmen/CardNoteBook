@@ -43,7 +43,7 @@ def inputLoop():
 			# ugly but works without calling windows error handler
 			sys.exit()
 		if cmd == "o":
-			webbrowser.open("http://localhost:8080")
+			webbrowser.open(f"http://localhost:{g.port}")
 
 
 configurator = Configurator(args)
