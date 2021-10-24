@@ -137,6 +137,9 @@ class Directory(ModelInit.DeclarativeBase):
 			p = p.parent
 		return depth
 
+	def getRoot(self):
+		return Directory.getDirectory(0, self.creator);
+
 	def __lt__(self, other):
 		# TODO: make getDepth() cache it's value, until modified
 		myDepth = self.getDepth()

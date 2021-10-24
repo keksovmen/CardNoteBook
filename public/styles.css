@@ -33,6 +33,13 @@ a:link, a:visited{
 }
 
 .table_holder{
-    margin: 16px auto;
+    margin: 0px auto;
     max-width: 1000px;
+    min-width: 1000px;
+}
+
+.body_holder{
+    display: grid;
+    grid-template-columns: max-content auto auto;
+    align-items: baseline;
 }

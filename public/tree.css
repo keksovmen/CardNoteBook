@@ -1,0 +1,45 @@
+.tree_view {
+    max-height: 900px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.tree_description{
+    margin-top: auto;
+}
+
+.parent_node{
+
+}
+
+.child_node{
+
+}
+
+.tree, .tree ul {
+    margin: 0px auto;
+    padding-left: 18px;
+    list-style-type: none;
+}
+
+.active{
+    display: block !important;
+}
+
+.child_node{
+    display: none;
+}
+
+.caret{
+    cursor: pointer;
+    user-select: none;
+}
+
+.caret::before{
+    content: "\25B6";
+    display: inline-block;
+}
+
+.caret-down::before{
+    transform: rotate(90deg);
+}

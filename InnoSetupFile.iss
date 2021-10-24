@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CardNotebook"
-#define MyAppVersion "1.0.1"
+#define MyAppVersion "1.2.0"
 #define MyAppPublisher "keksovmen"
 #define MyAppURL "https://github.com/keksovmen"
 #define MyAppExeName "CardNotebook.exe"

@@ -13,7 +13,8 @@ __all__ = ["createBackNavigation",
 		   "prettyTime",
 		   "isAcceptableLength",
 		   "wrongLengthMessage",
-		   "webhelpers2"]
+		   "webhelpers2",
+		   "createDirTree"]
 
 
 def createBackNavigation(dir: Directory, isCardView: bool = False) -> str:
@@ -65,10 +66,54 @@ def wrongLengthMessage(max_size: int) -> str:
 	return f"Field length must be less or equal to {max_size} symbols"
 
 
+def createDirTree(root: Directory, current: Directory) -> str:
+	builder = HTMLBuilder()
+	result = [__getTreeTag(root, current, False)]
+	result.append(builder.tag("ul", _closed=False, class_="tree"))
+	result.extend([__createTreeNode(child, current) for child in root.children])
+	result.append(builder.tag("/ul", _closed=False))
+
+	return reduce(lambda t, v: t + v, result)
+
+
+def __createTreeNode(directory: Directory, current: Directory) -> str:
+	# TODO: use htmlbuilder to make it in 1 call without using an intermidiet list
+	if directory.children:
+		builder = HTMLBuilder()
+		result = [builder.tag("li", _closed=False),
+				  builder.tag("span", "", class_="caret"),
+				  __wrapTag(__getTreeTag(directory, current), "span",
+							"parent_node"),
+				  builder.tag("ul", _closed=False, class_="child_node")]
+		for child in directory.children:
+			result.append(__createTreeNode(child, current))
+		result.append(builder.tag("/ul", _closed=False))
+		result.append(builder.tag("/li", _closed=False))
+		return reduce(lambda t, v: t + v, result)
+	else:
+		return __wrapTag(__getTreeTag(directory, current), "li")
+
+
 def __getHrefTag(dir: Directory) -> webhelpers2.html.literal:
 	return HTMLBuilder().tag("a", unescape(f"{dir.title}"),
 							 href=f"/dir/view?dir_id={dir.dir_id}")
 
 
 def __getSpanTag(dir: Directory) -> webhelpers2.html.literal:
-	return HTMLBuilder().tag("span", unescape(f"{dir.title}"))
+	return HTMLBuilder().tag("span", f"{dir.title}")
+
+
+def __getTreeTag(dir: Directory, cur_dir: Directory, enableId: bool = True):
+	createFunc = __getSpanTag if dir == cur_dir else __getHrefTag
+	if enableId:
+		return __wrapTag(createFunc(dir),
+						 "span",
+						 parentId="current_dir" if dir == cur_dir else None)
+	else:
+		return createFunc(dir)
+
+
+def __wrapTag(tagToWrap, parentTag,
+			  parentClass=None, parentId=None) -> webhelpers2.html.literal:
+	return HTMLBuilder().tag(parentTag, tagToWrap, class_=parentClass,
+							 id=parentId)
