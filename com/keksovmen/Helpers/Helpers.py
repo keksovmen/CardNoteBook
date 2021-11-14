@@ -79,8 +79,9 @@ def createCardsOverview(current: Directory) -> str:
 	result = []
 	for c in current.cards:
 		result.append((c.title, __wrapTag(__createCardViewHref(c.title, c.card_id), "div")))
+	if not result:
+		return HTMLBuilder().tag("div", "No cards for now")
 	result.sort(key=lambda v: v[0].lower())
-
 	return reduce(lambda t, v: t + v, map(lambda v: v[1], result))
 
 def __createTreeNode(directory: Directory, current: Directory) -> str:

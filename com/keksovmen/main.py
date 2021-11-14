@@ -58,7 +58,8 @@ httpd = make_server("localhost", g.port, application)
 
 print("Possible commands:\n",
 	  "\tq - for closing the app\n",
-	  "\to - for opening web bworser with app tab")
+	  "\to - for opening web bworser with app tab\n\n",
+	  g.allowedArguments())
 
 Thread(target=httpLoop, daemon=True).start()
 Thread(target=inputLoop, daemon=False).start()
