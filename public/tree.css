@@ -1,11 +1,13 @@
 .tree_view {
     max-height: 900px;
+    margin-right: 24px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .tree_description{
     margin-top: auto;
+    margin-right: 24px;
 }
 
 .parent_node{
@@ -42,4 +44,22 @@
 
 .caret-down::before{
     transform: rotate(90deg);
+}
+
+.tree_cards_description{
+    margin-top: auto;
+    margin-left: 24px;
+    text-align: right;
+}
+
+.cards_holder{
+    max-height: 900px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.cards_holder, .cards_holder div{
+    margin-left: 24px;
+    text-align: right;
+    
 }

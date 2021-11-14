@@ -40,9 +40,20 @@ function loaded(){
             return;
         }
         view.style["height"] = (window.innerHeight - 130) + "px";
+        console.log("resized tree view")
+    }
+
+    function resizeTreeCardView(){
+        var view = document.getElementsByClassName("cards_holder")[0]
+        if (view == null){
+            return;
+        }
+        view.style["height"] = (window.innerHeight - 130) + "px";
+        console.log("resized card tree view")
     }
 
     addCaretListeners();
     openCurrentTree();
     resizeTreeView();
+    resizeTreeCardView();
 }

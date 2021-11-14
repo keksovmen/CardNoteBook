@@ -75,6 +75,13 @@ def createDirTree(root: Directory, current: Directory) -> str:
 
 	return reduce(lambda t, v: t + v, result)
 
+def createCardsOverview(current: Directory) -> str:
+	result = []
+	for c in current.cards:
+		result.append((c.title, __wrapTag(__createCardViewHref(c.title, c.card_id), "div")))
+	result.sort(key=lambda v: v[0].lower())
+
+	return reduce(lambda t, v: t + v, map(lambda v: v[1], result))
 
 def __createTreeNode(directory: Directory, current: Directory) -> str:
 	# TODO: use htmlbuilder to make it in 1 call without using an intermidiet list
@@ -117,3 +124,6 @@ def __wrapTag(tagToWrap, parentTag,
 			  parentClass=None, parentId=None) -> webhelpers2.html.literal:
 	return HTMLBuilder().tag(parentTag, tagToWrap, class_=parentClass,
 							 id=parentId)
+
+def __createCardViewHref(title, card_id):
+		return HTMLBuilder().tag("a", title, href=f"/card/view?card_id={card_id}")

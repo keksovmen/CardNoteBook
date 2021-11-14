@@ -9,7 +9,7 @@
         <py:include href="com/keksovmen/Controllers/xhtml/user/userGuide.xhtml"/>
         <py:include href="com/keksovmen/Controllers/xhtml/util/actionPanel.xhtml"/>
     </div>
-    <div></div>
+    <div class="tree_cards_description">Cards view</div>
     <div class="tree_view">
         ${h.createDirTree(current_dir.getRoot(), current_dir)}
     </div>
@@ -115,6 +115,7 @@
             </py:if>
         </div>
     </div>
+    <div class="cards_holder" pu:if="current_dir" py:content="h.createCardsOverview(current_dir)"></div>
 </div>
 </body>
 </html>
